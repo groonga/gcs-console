@@ -1,5 +1,5 @@
 {
-  "name": "gcs",
+  "name": "gcs-console",
   "description": "Groonga CloudSearch Console",
   "version": "1.0.0",
   "author": "Groonga CloudSearch project <gcs@groonga.org>",
