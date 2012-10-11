@@ -14,4 +14,14 @@ html
           a.brand(href='/') Groonga CloudSearch Console
 
     .container
-      block content
+      .row
+        .span12
+          h1 Groonga CloudSearch Console
+      .row
+        .span3
+          h2 Domains
+          ul
+            each domain in domains
+              li= domain.DomainName
+        .span9
+          block content
