@@ -27,6 +27,7 @@ app.configure('development', function(){
 });
 
 app.get('/', routes.index);
+app.get('/domain/:name', routes.domain);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Groonga CloudSearch Console listening on port " +

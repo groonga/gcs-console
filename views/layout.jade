@@ -19,9 +19,12 @@ html
           h1 Groonga CloudSearch Console
       .row
         .span3
-          h2 Domains
-          ul
-            each domain in domains
-              li= domain.DomainName
+          .well(style="padding: 10px 0 10px 0;")
+            ul.nav.nav-list
+              li.nav-header Domains
+              each domain in domains
+                li
+                  a(href="/domain/"+domain.DomainName)
+                    = domain.DomainName
         .span9
           block content

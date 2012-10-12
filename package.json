@@ -16,7 +16,8 @@
   "dependencies": {
     "express": "",
     "jade": "",
-    "awssum": ""
+    "awssum": "",
+    "underscore": ""
   },
   "scripts": {
     "start": "node app"
