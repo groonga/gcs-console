@@ -1,0 +1,10 @@
+extends domain
+
+block domain-content
+  table.table.table-bordered
+    tr
+      th Document service endpoint
+      td= domain.DocService.Endpoint
+    tr
+      th Search service endpoint
+      td= domain.SearchService.Endpoint

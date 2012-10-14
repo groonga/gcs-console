@@ -5,5 +5,5 @@ exports.index = function(req, res){
 
 exports.domain = function(req, res){
   var domain = _.where(res.locals.domains, {DomainName: req.params.name})[0];
-  res.render('domain', {domain: domain});
+  res.render('domain-show', {domain: domain});
 };
