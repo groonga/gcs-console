@@ -65,4 +65,4 @@ exports.domainSearch = function(req, res) {
   });
 
   // TODO handle errors
-}
+};
