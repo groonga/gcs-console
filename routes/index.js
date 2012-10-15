@@ -6,13 +6,19 @@ exports.index = function(req, res) {
   res.render('index');
 };
 
-exports.domain = function(req, res) {
+function prepareCurrentDomain(req, res) {
   var domain = _.where(res.locals.domains, {DomainName: req.params.name})[0];
+  domain.isSelected = true;
+  return domain;
+}
+
+exports.domain = function(req, res) {
+  var domain = prepareCurrentDomain(req, res);
   res.render('domain-show', {domain: domain});
 };
 
 exports.domainSearch = function(req, res) {
-  var domain = _.where(res.locals.domains, {DomainName: req.params.name})[0];
+  var domain = prepareCurrentDomain(req, res);
   var query = req.query.query;
   var size = 10;
   var start = 0; // TODO support paginate

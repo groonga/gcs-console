@@ -10,13 +10,10 @@ block application
         ul.nav.nav-list
           li.nav-header Domains
           each domain in domains
-            li
+            li(class=domain.isSelected?'active':null)
+              - console.log(domain.isSelected)
               a(href="/domain/"+domain.DomainName)
                 = domain.DomainName
-            li
-              ul.nav.nav-list
-                li
-                  a(href="/domain/"+domain.DomainName+"/search") search
 
     .span9
       block content
