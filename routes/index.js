@@ -66,3 +66,7 @@ exports.domainSearch = function(req, res) {
 
   // TODO handle errors
 };
+
+exports.domainCreate = function(req, res) {
+  res.render('domain-create', {domain: null});
+};
