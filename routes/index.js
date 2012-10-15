@@ -2,11 +2,11 @@ var querystring = require('querystring');
 var _ = require('underscore');
 var http = require('http');
 
-exports.index = function(req, res){
+exports.index = function(req, res) {
   res.render('index');
 };
 
-exports.domain = function(req, res){
+exports.domain = function(req, res) {
   var domain = _.where(res.locals.domains, {DomainName: req.params.name})[0];
   res.render('domain-show', {domain: domain});
 };
