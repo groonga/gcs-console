@@ -1,3 +1,20 @@
 body {
   margin-top: 60px;
 }
+
+.form-search input[type="text"] {
+  padding: 10px 10px;
+  margin-bottom: 10px;
+}
+
+.form-search input[type="submit"] {
+  padding: 7px 14px 7px 14px;
+}
+
+.id-row {
+  background-color: #f4f9fe;
+}
+
+.id-cell {
+  font-weight: bold;
+}

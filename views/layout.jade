@@ -26,5 +26,11 @@ html
                 li
                   a(href="/domain/"+domain.DomainName)
                     = domain.DomainName
+                li
+                  ul.nav.nav-list
+                    li
+                      a(href="/domain/"+domain.DomainName)
+                        = domain.DomainName
+
         .span9
           block content
