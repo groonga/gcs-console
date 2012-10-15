@@ -1,0 +1,22 @@
+extend layout
+
+block application
+  .row
+    .span12
+      h1 Groonga CloudSearch Console
+  .row
+    .span3
+      .well(style="padding: 10px 0 10px 0;")
+        ul.nav.nav-list
+          li.nav-header Domains
+          each domain in domains
+            li
+              a(href="/domain/"+domain.DomainName)
+                = domain.DomainName
+            li
+              ul.nav.nav-list
+                li
+                  a(href="/domain/"+domain.DomainName+"/search") search
+
+    .span9
+      block content
