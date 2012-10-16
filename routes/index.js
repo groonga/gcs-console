@@ -12,6 +12,18 @@ function prepareCurrentDomain(req, res) {
   return domain;
 }
 
+function convertToArray(data) {
+  // awssum returns undefined for 0 item, object itself for 1 item,
+  // array for >1 items. Make all of them as a Array.
+  if (!data) {
+    return [];
+  } else if (!(data instanceof Array)) {
+    return [data];
+  } else {
+    return data;
+  }
+}
+
 exports.domain = function(req, res) {
   var domain = prepareCurrentDomain(req, res);
   res.render('domain-show', {domain: domain});
@@ -31,7 +43,7 @@ exports.domainSearch = function(req, res) {
       res.render('error', {message: error.Message});
       return;
     }
-    var indexFields = data.Body.DescribeIndexFieldsResponse.DescribeIndexFieldsResult.IndexFields.member;
+    var indexFields = convertToArray(data.Body.DescribeIndexFieldsResponse.DescribeIndexFieldsResult.IndexFields.member);
     var indexFieldNames = indexFields.map(function(indexField) {
       return indexField.Options.IndexFieldName;
     });
