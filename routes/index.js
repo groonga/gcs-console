@@ -35,6 +35,18 @@ exports.domainSearch = function(req, res) {
   var size = 10;
   var start = 0; // TODO support paginate
 
+  if (query === undefined) {
+    var locals = {
+      domain: domain,
+      query: null,
+      requestURL: null,
+      results: null
+    };
+    console.log(locals);
+    res.render('domain-search', locals);
+    return;
+  }
+
   req.cloudsearch.DescribeIndexFields({
     DomainName: domain.DomainName
   }, function(error, data) {

@@ -7,23 +7,24 @@ block domain-content
       input(type="submit", value="Search").btn.btn-primary
     .clearfix
 
-  p
-    | Request URL: 
-    a(href=requestURL, target="_blank")= requestURL
+  if query !== null
+    p
+      | Request URL: 
+      a(href=requestURL, target="_blank")= requestURL
 
-  if results.hits.hit.length === 0
-    .alert.alert-error
-      strong Not found 
-      | for query 
-      strong= query
-  else
-    table.table.table-bordered
-      each hit, index in results.hits.hit
-        tr.id-row
-          td= index + start + 1
-          td.id-cell(colspan=2)= hit.id
-        each value, columnName in hit.data
-          tr
-            td
-            td= columnName
-            td= value
+    if results.hits.hit.length === 0
+      .alert.alert-error
+        strong Not found 
+        | for query 
+        strong= query
+    else
+      table.table.table-bordered
+        each hit, index in results.hits.hit
+          tr.id-row
+            td= index + start + 1
+            td.id-cell(colspan=2)= hit.id
+          each value, columnName in hit.data
+            tr
+              td
+              td= columnName
+              td= value
