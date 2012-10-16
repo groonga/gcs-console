@@ -15,8 +15,9 @@ block domain-content
     if !results.hits || results.hits.hit.length === 0
       .alert.alert-error
         strong Not found 
-        | for query 
+        | for query '
         strong= query
+        | '
     else
       table.table.table-bordered
         each hit, index in results.hits.hit
