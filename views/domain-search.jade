@@ -12,7 +12,7 @@ block domain-content
       | Request URL: 
       a(href=requestURL, target="_blank")= requestURL
 
-    if results.hits.hit.length === 0
+    if !results.hits || results.hits.hit.length === 0
       .alert.alert-error
         strong Not found 
         | for query 
