@@ -42,7 +42,6 @@ exports.domainSearch = function(req, res) {
       requestURL: null,
       results: null
     };
-    console.log(locals);
     res.render('domain-search', locals);
     return;
   }
