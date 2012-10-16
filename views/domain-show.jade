@@ -8,3 +8,22 @@ block domain-content
     tr
       th Search service endpoint
       td= domain.SearchService.Endpoint
+
+  a.btn.btn-danger.pull-right(role="button", data-toggle="modal", data-target="#deleteDialog")
+    i.icon-trash.icon-white
+    |  Delete this domain
+
+  .modal.hide#deleteDialog(role="dialog", tabindex="-1", aria-labelledby="deleteDialogLabel", aria-hidden="true")
+    .modal-header
+      button.close(type="button", data-dismiss="modal", aria-hidden="true") &times;
+      h3#deleteDialogLabel Delete '#{domain.DomainName}' domain
+    .modal-body
+      p Are you sure?
+    .modal-footer
+      form(action="/domain/"+domain.DomainName, method="POST").modal-form
+        input(type="hidden", name="_method", value="DELETE")
+        button.btn(data-dismiss="modal", aria-hidden="true") Cancel
+        button.btn(type="submit").btn.btn-danger
+          i.icon-trash.icon-white
+          |  Delete
+
