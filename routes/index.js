@@ -26,7 +26,6 @@ function convertToArray(data) {
 
 exports.domain = function(req, res) {
   var domain = prepareCurrentDomain(req, res);
-  req.session.flash = domain.DomainName;
   res.render('domain-show', {domain: domain});
 };
 
