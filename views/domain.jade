@@ -5,9 +5,15 @@ block content
     i.icon-folder-open
     | 
     = domain.DomainName
+
   p.btn-group
     a(href="/domain/"+domain.DomainName).btn About
     a(href="/domain/"+domain.DomainName+"/search").btn Search
+
+  // TODO alert user before delete
+  form(action="/domain/"+domain.DomainName, method="POST")
+    input(type="hidden", name="_method", value="DELETE")
+    input(type="submit", value="Destroy").btn.btn-danger
 
   hr
 

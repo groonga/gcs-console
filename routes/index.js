@@ -26,6 +26,7 @@ function convertToArray(data) {
 
 exports.domain = function(req, res) {
   var domain = prepareCurrentDomain(req, res);
+  req.session.flash = domain.DomainName;
   res.render('domain-show', {domain: domain});
 };
 
@@ -112,5 +113,25 @@ exports.domainCreatePost = function(req, res) {
 
     var domainCreated = data.Body.CreateDomainResponse.CreateDomainResult.DomainStatus;
     res.redirect('/domain/'+domainCreated.DomainName);
+  });
+};
+
+exports.domainDelete = function(req, res) {
+  var domain = prepareCurrentDomain(req, res);
+  req.cloudsearch.DeleteDomain({
+    DomainName: domain.DomainName
+  }, function(error, data) {
+    if (error) {
+      // TODO redirect back domainCreate if it is a kind of validation error
+      // TODO render error in a more pretty way
+      // TODO in some cases, the error should be 400 rather than 500
+      res.status(500);
+      var message = JSON.stringify(error.Body.Response.Errors);
+      res.render('error', {message: message});
+      return;
+    }
+
+    res.redirect('/');
+    // TODO some feedback to user may be needed
   });
 };
