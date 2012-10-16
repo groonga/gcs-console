@@ -94,3 +94,23 @@ exports.domainSearch = function(req, res) {
 exports.domainCreate = function(req, res) {
   res.render('domain-create', {domain: null});
 };
+
+exports.domainCreatePost = function(req, res) {
+  var domainName = req.body.domain_name;
+  req.cloudsearch.CreateDomain({
+    DomainName: domainName
+  }, function(error, data) {
+    if (error) {
+      // TODO redirect back domainCreate if it is a kind of validation error
+      // TODO render error in a more pretty way
+      // TODO in some cases, the error should be 400 rather than 500
+      res.status(500);
+      var message = JSON.stringify(error.Body.Response.Errors);
+      res.render('error', {message: message});
+      return;
+    }
+
+    var domainCreated = data.Body.CreateDomainResponse.CreateDomainResult.DomainStatus;
+    res.redirect('/domain/'+domainCreated.DomainName);
+  });
+};

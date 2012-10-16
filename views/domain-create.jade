@@ -2,4 +2,6 @@ extends application
 
 block content
   h1 Creating a new domain
-  p TODO: implement
+  form(method="POST").form-inline
+    input(type="text", name="domain_name")
+    input(type="submit", value="Create").btn
