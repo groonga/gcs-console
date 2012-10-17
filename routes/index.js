@@ -6,9 +6,30 @@ exports.index = function(req, res) {
   res.render('index');
 };
 
-function prepareCurrentDomain(req, res) {
+function withDomain(req, res, callback) {
   var domain = _.where(res.locals.domains, {DomainName: req.params.name})[0];
   domain.isSelected = true;
+
+  req.domain = domain;
+
+  // get index fields
+  req.cloudsearch.DescribeIndexFields({
+    DomainName: domain.DomainName
+  }, function(error, data) {
+    if (error) {
+      res.status(500);
+      res.render('error', {message: error.Message});
+      return;
+    }
+    var indexFields = convertToArray(data.Body.DescribeIndexFieldsResponse.DescribeIndexFieldsResult.IndexFields.member);
+    var indexFieldNames = indexFields.map(function(indexField) {
+      return indexField.Options.IndexFieldName;
+    });
+
+    req.indexFields = indexFields;
+    callback(req, res);
+  });
+
   return domain;
 }
 
@@ -25,37 +46,29 @@ function convertToArray(data) {
 }
 
 exports.domain = function(req, res) {
-  var domain = prepareCurrentDomain(req, res);
-  res.render('domain-show', {domain: domain});
+  withDomain(req, res, function(req, res) {
+    res.render('domain-show', {domain: req.domain});
+  });
 };
 
 exports.domainSearch = function(req, res) {
-  var domain = prepareCurrentDomain(req, res);
-  var query = req.query.query;
-  var size = 10;
-  var start = 0; // TODO support paginate
+  withDomain(req, res, function(req, res) {
+    var query = req.query.query;
+    var size = 10;
+    var start = 0; // TODO support paginate
 
-  if (query === undefined) {
-    var locals = {
-      domain: domain,
-      query: null,
-      requestURL: null,
-      results: null
-    };
-    res.render('domain-search', locals);
-    return;
-  }
-
-  req.cloudsearch.DescribeIndexFields({
-    DomainName: domain.DomainName
-  }, function(error, data) {
-    if (error) {
-      res.status(500);
-      res.render('error', {message: error.Message});
+    if (query === undefined) {
+      var locals = {
+        domain: req.domain,
+        query: null,
+        requestURL: null,
+        results: null
+      };
+      res.render('domain-search', locals);
       return;
     }
-    var indexFields = convertToArray(data.Body.DescribeIndexFieldsResponse.DescribeIndexFieldsResult.IndexFields.member);
-    var indexFieldNames = indexFields.map(function(indexField) {
+
+    var indexFieldNames = req.indexFields.map(function(indexField) {
       return indexField.Options.IndexFieldName;
     });
 
@@ -65,7 +78,7 @@ exports.domainSearch = function(req, res) {
       start: start,
       'return-fields': indexFieldNames.join(',')
     };
-    var requestURL = 'http://' + domain.SearchService.Endpoint + '/2011-02-01/search?' + querystring.stringify(paramsForSearch);
+    var requestURL = 'http://' + req.domain.SearchService.Endpoint + '/2011-02-01/search?' + querystring.stringify(paramsForSearch);
 
     var buffer = '';
     var results = null;
@@ -76,7 +89,7 @@ exports.domainSearch = function(req, res) {
       });
       searchResponse.on('end', function() {
         var locals = {
-          domain: domain,
+          domain: req.domain,
           query: query,
           requestURL: requestURL,
           results: JSON.parse(buffer),
@@ -85,9 +98,8 @@ exports.domainSearch = function(req, res) {
         res.render('domain-search', locals);
       });
     });
+    // TODO handle errors
   });
-
-  // TODO handle errors
 };
 
 exports.domainCreate = function(req, res) {
