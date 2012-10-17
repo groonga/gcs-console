@@ -1,10 +1,7 @@
 extends application
 
 block content
-  .well
-    i.icon-folder-open
-    | 
-    = domain.DomainName
+  h1= domain.DomainName
 
   p.btn-group
     a(href="/domain/"+domain.DomainName).btn About
