@@ -22,9 +22,6 @@ function withDomain(req, res, callback) {
       return;
     }
     var indexFields = convertToArray(data.Body.DescribeIndexFieldsResponse.DescribeIndexFieldsResult.IndexFields.member);
-    var indexFieldNames = indexFields.map(function(indexField) {
-      return indexField.Options.IndexFieldName;
-    });
 
     req.indexFields = indexFields;
     callback(req, res);
