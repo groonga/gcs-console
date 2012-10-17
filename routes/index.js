@@ -47,7 +47,10 @@ function convertToArray(data) {
 
 exports.domain = function(req, res) {
   withDomain(req, res, function(req, res) {
-    res.render('domain-show', {domain: req.domain});
+    res.render('domain-show', {
+      domain: req.domain,
+      indexFields: req.indexFields
+    });
   });
 };
 

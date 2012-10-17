@@ -1,6 +1,7 @@
 extends domain
 
 block domain-content
+  h2 Endpoints
   table.table.table-bordered
     tr
       th Document service endpoint
@@ -8,6 +9,28 @@ block domain-content
     tr
       th Search service endpoint
       td= domain.SearchService.Endpoint
+
+  h2 Index Fields
+  table.table.table-bordered
+    tr
+      th Name
+      th Type
+      th Facet
+      th Result
+    for indexField in indexFields
+      tr
+        th= indexField.Options.IndexFieldName
+        td= indexField.Options.IndexFieldType
+        case indexField.Options.IndexFieldType
+          when 'text'
+            td= indexField.Options.TextOptions.FacetEnabled
+            td= indexField.Options.TextOptions.ResultEnabled
+          when 'literal'
+            td= indexField.Options.LiteralOptions.FacetEnabled
+            td= indexField.Options.LiteralOptions.ResultEnabled
+          default
+            td
+            td
 
   a.btn.btn-danger.pull-right(role="button", data-toggle="modal", data-target="#deleteDialog")
     i.icon-trash.icon-white
