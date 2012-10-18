@@ -7,6 +7,7 @@ var express = require('express')
   , routes = require('./routes')
   , http = require('http')
   , path = require('path');
+var flash = require('connect-flash');
 
 var app = express();
 
@@ -18,6 +19,15 @@ app.configure(function(){
   app.use(express.logger('dev'));
   app.use(express.bodyParser());
   app.use(express.methodOverride());
+  app.use(express.cookieParser('keyboard cat'));
+  app.use(express.session({ cookie: { maxAge: 60000 }}));
+  app.use(flash());
+  app.use((function() {
+    return function(req, res, next) {
+      res.locals.info = req.flash('info');
+      next();
+    }
+  })());
   app.use(express.static(path.join(__dirname, 'public')));
   app.use(require('./lib/cloudsearch').cloudsearch());
   app.use(app.router);

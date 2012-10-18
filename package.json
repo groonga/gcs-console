@@ -17,7 +17,8 @@
     "express": "",
     "jade": "",
     "awssum": "",
-    "underscore": ""
+    "underscore": "",
+    "connect-flash": ""
   },
   "scripts": {
     "start": "node app"

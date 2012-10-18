@@ -17,4 +17,6 @@ html
         .alert.alert-error
           strong Error. 
           span= error.message
+      for message in info
+        .alert.alert-info= message
       block application

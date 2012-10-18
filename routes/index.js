@@ -168,6 +168,7 @@ exports.domainCreatePost = function(req, res) {
     }
 
     var domainCreated = data.Body.CreateDomainResponse.CreateDomainResult.DomainStatus;
+    req.flash('info', 'Domain successfully created');
     res.redirect('/domain/'+domainCreated.DomainName);
   });
 };
@@ -182,7 +183,7 @@ exports.domainDelete = function(req, res) {
       return;
     }
 
+    req.flash('info', 'Domain successfully deleted');
     res.redirect('/');
-    // TODO some feedback to user may be needed
   });
 };
