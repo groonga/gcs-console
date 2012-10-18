@@ -144,6 +144,12 @@ exports.domainCreatePost = function(req, res) {
     DomainName: domainName
   }, function(error, data) {
     if (error) {
+      if (error.Message) {
+        res.status(500);
+        res.render('error', {message: error.Message});
+        return;
+      }
+
       // TODO redirect back domainCreate if it is a kind of validation error
       // TODO render error in a more pretty way
       // TODO in some cases, the error should be 400 rather than 500
