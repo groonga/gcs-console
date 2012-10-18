@@ -4,9 +4,9 @@ block content
   h1= domain.DomainName
 
   ul.nav.nav-tabs
-    li(class=(action == "about" ? "active" : ""))
+    li(class=(action == "domain_show" ? "active" : ""))
       a(href="/domain/"+domain.DomainName) About
-    li(class=(action == "search" ? "active" : ""))
+    li(class=(action == "domain_search" ? "active" : ""))
       a(href="/domain/"+domain.DomainName+"/search") Search
 
   block domain-content

@@ -3,7 +3,7 @@ var _ = require('underscore');
 var http = require('http');
 
 exports.index = function(req, res) {
-  res.render('index');
+  res.render('index', {action: 'index'});
 };
 
 function withDomain(req, res, callback) {
@@ -45,7 +45,7 @@ function convertToArray(data) {
 exports.domain = function(req, res) {
   withDomain(req, res, function(req, res) {
     res.render('domain-show', {
-      action: 'about',
+      action: 'domain_show',
       domain: req.domain,
       indexFields: req.indexFields
     });
@@ -60,7 +60,7 @@ exports.domainSearch = function(req, res) {
 
     if (query === undefined) {
       var locals = {
-        action: 'search',
+        action: 'domain_search',
         domain: req.domain,
         query: null,
         requestURL: null,
@@ -92,7 +92,7 @@ exports.domainSearch = function(req, res) {
       searchResponse.on('end', function() {
         var results = JSON.parse(buffer);
         var locals = {
-          action: 'search',
+          action: 'domain_search',
           domain: req.domain,
           query: query,
           requestURL: requestURL,
@@ -132,7 +132,10 @@ exports.domainSearch = function(req, res) {
 };
 
 exports.domainCreate = function(req, res) {
-  res.render('domain-create', {domain: null});
+  res.render('domain-create', {
+    action: "domain_create",
+    domain: null
+  });
 };
 
 exports.domainCreatePost = function(req, res) {
