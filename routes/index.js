@@ -165,22 +165,16 @@ exports.domainCreatePost = function(req, res) {
 };
 
 exports.domainDelete = function(req, res) {
-  withDomain(req, res, function(req, res) {
-    req.cloudsearch.DeleteDomain({
-      DomainName: req.domain.DomainName
-    }, function(error, data) {
-      if (error) {
-        // TODO redirect back domainCreate if it is a kind of validation error
-        // TODO render error in a more pretty way
-        // TODO in some cases, the error should be 400 rather than 500
-        res.status(500);
-        var message = JSON.stringify(error.Body.Response.Errors);
-        res.render('error', {message: message});
-        return;
-      }
+  req.cloudsearch.DeleteDomain({
+    DomainName: req.params.name
+  }, function(error, data) {
+    if (error) {
+      res.status(500);
+      res.render('error', {error: new Error(error.Message)});
+      return;
+    }
 
-      res.redirect('/');
-      // TODO some feedback to user may be needed
-    });
+    res.redirect('/');
+    // TODO some feedback to user may be needed
   });
 };
