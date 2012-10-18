@@ -55,7 +55,7 @@ exports.domainSearch = function(req, res) {
   withDomain(req, res, function(req, res) {
     var query = req.query.query;
     var size = 5;
-    var start = 0; // TODO support paginate
+    var start = Number(req.query.start || 0);
 
     if (query === undefined) {
       var locals = {
@@ -88,13 +88,39 @@ exports.domainSearch = function(req, res) {
         buffer += chunk;
       });
       searchResponse.on('end', function() {
+        var results = JSON.parse(buffer);
         var locals = {
           domain: req.domain,
           query: query,
           requestURL: requestURL,
-          results: JSON.parse(buffer),
-          start: start
+          results: results,
+          start: start,
+          nextLink: null,
+          previousLink: null
         };
+
+        if (results.hits.found > start + results.hits.hit.length) {
+          var nextLinkParams = {
+            query: query,
+            start: start + results.hits.hit.length
+          };
+          locals.nextLink = '/domain/' +
+            req.domain.DomainName +
+            '/search?' +
+            querystring.stringify(nextLinkParams);
+        }
+
+        if (start - size >= 0) {
+          var previousLinkParams = {
+            query: query,
+            start: start - size
+          };
+          locals.previousLink = '/domain/' +
+            req.domain.DomainName +
+            '/search?' +
+            querystring.stringify(previousLinkParams);
+        }
+
         res.render('domain-search', locals);
       });
     });

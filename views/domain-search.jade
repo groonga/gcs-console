@@ -23,6 +23,20 @@ block domain-content
         strong Found #{results.hits.found} records. 
         | Showing #{results.hits.start + 1} - #{results.hits.start + results.hits.hit.length} (#{results.hits.hit.length} records).
 
+      ul.pager
+        if previousLink
+          li.previous
+            a(href=previousLink, rel="prev") &laquo; Previous
+        else
+          li.previous.disabled
+            a &laquo; Previous
+        if nextLink
+          li.next
+            a(href=nextLink, rel="next") Next &raquo;
+        else
+          li.next.disabled
+            a Next &raquo;
+
       table.table.table-bordered
         each hit, index in results.hits.hit
           tr.id-row
