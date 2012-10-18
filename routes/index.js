@@ -54,7 +54,7 @@ exports.domain = function(req, res) {
 exports.domainSearch = function(req, res) {
   withDomain(req, res, function(req, res) {
     var query = req.query.query;
-    var size = 10;
+    var size = 5;
     var start = 0; // TODO support paginate
 
     if (query === undefined) {
