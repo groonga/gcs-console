@@ -169,7 +169,7 @@ exports.domainCreatePost = function(req, res) {
 
     var domainCreated = data.Body.CreateDomainResponse.CreateDomainResult.DomainStatus;
     req.flash('info', 'Domain successfully created');
-    res.redirect('/domain/'+domainCreated.DomainName);
+    res.redirect('/domain/' + domainCreated.DomainName);
   });
 };
 
