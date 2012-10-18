@@ -45,6 +45,7 @@ function convertToArray(data) {
 exports.domain = function(req, res) {
   withDomain(req, res, function(req, res) {
     res.render('domain-show', {
+      action: 'about',
       domain: req.domain,
       indexFields: req.indexFields
     });
@@ -59,6 +60,7 @@ exports.domainSearch = function(req, res) {
 
     if (query === undefined) {
       var locals = {
+        action: 'search',
         domain: req.domain,
         query: null,
         requestURL: null,
@@ -90,6 +92,7 @@ exports.domainSearch = function(req, res) {
       searchResponse.on('end', function() {
         var results = JSON.parse(buffer);
         var locals = {
+          action: 'search',
           domain: req.domain,
           query: query,
           requestURL: requestURL,

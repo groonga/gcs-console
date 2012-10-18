@@ -3,10 +3,10 @@ extends application
 block content
   h1= domain.DomainName
 
-  p.btn-group
-    a(href="/domain/"+domain.DomainName).btn About
-    a(href="/domain/"+domain.DomainName+"/search").btn Search
-
-  hr
+  ul.nav.nav-tabs
+    li(class=(action == "about" ? "active" : ""))
+      a(href="/domain/"+domain.DomainName) About
+    li(class=(action == "search" ? "active" : ""))
+      a(href="/domain/"+domain.DomainName+"/search") Search
 
   block domain-content
