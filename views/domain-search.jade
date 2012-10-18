@@ -19,6 +19,10 @@ block domain-content
         strong= query
         | '
     else
+      .alert.alert-info
+        strong Found #{results.hits.found} records. 
+        | Showing #{results.hits.start + 1} - #{results.hits.start + results.hits.hit.length} (#{results.hits.hit.length} records).
+
       table.table.table-bordered
         each hit, index in results.hits.hit
           tr.id-row
