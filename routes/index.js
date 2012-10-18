@@ -18,7 +18,7 @@ function withDomain(req, res, callback) {
   }, function(error, data) {
     if (error) {
       res.status(500);
-      res.render('error', {message: error.Message});
+      res.render('error', {error: new Error(error.Message)});
       return;
     }
     var indexFields = convertToArray(data.Body.DescribeIndexFieldsResponse.DescribeIndexFieldsResult.IndexFields.member);
@@ -134,7 +134,8 @@ exports.domainSearch = function(req, res) {
 exports.domainCreate = function(req, res) {
   res.render('domain-create', {
     action: "domain_create",
-    domain: null
+    domain: null,
+    creatingDomainName: null
   });
 };
 
@@ -146,16 +147,23 @@ exports.domainCreatePost = function(req, res) {
     if (error) {
       if (error.Message) {
         res.status(500);
-        res.render('error', {message: error.Message});
+        res.render('error', {error: new Error(error.Message)});
         return;
       }
 
-      // TODO redirect back domainCreate if it is a kind of validation error
-      // TODO render error in a more pretty way
-      // TODO in some cases, the error should be 400 rather than 500
-      res.status(500);
-      var message = JSON.stringify(error.Body.Response.Errors);
-      res.render('error', {message: message});
+      var errorToRender = null;
+      try {
+        errorToRender = new Error(error.Body.Response.Errors.Error.Message)
+      } catch(e) {
+        errorToRender = e;
+      };
+
+      res.render('domain-create', {
+        action: "domain_create",
+        domain: null,
+        creatingDomainName: domainName,
+        error: errorToRender
+      });
       return;
     }
 

@@ -13,4 +13,8 @@ html
           a.brand(href='/') Groonga CloudSearch Console
 
     .container
+      if (typeof(error) != 'undefined')
+        .alert.alert-error
+          strong Error. 
+          span= error.message
       block application

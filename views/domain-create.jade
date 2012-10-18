@@ -3,5 +3,5 @@ extends application
 block content
   h1 Creating a new domain
   form(method="POST").form-inline
-    input(type="text", name="domain_name")
+    input(type="text", name="domain_name", value=creatingDomainName)
     input(type="submit", value="Create").btn
