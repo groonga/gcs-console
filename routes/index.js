@@ -102,26 +102,28 @@ exports.domainSearch = function(req, res) {
           previousLink: null
         };
 
-        if (results.hits.found > start + results.hits.hit.length) {
-          var nextLinkParams = {
-            query: query,
-            start: start + results.hits.hit.length
-          };
-          locals.nextLink = '/domain/' +
-            req.domain.DomainName +
-            '/search?' +
-            querystring.stringify(nextLinkParams);
-        }
+        if (results.hits) {
+          if (results.hits.found > start + results.hits.hit.length) {
+            var nextLinkParams = {
+              query: query,
+              start: start + results.hits.hit.length
+            };
+            locals.nextLink = '/domain/' +
+              req.domain.DomainName +
+              '/search?' +
+              querystring.stringify(nextLinkParams);
+          }
 
-        if (start - size >= 0) {
-          var previousLinkParams = {
-            query: query,
-            start: start - size
-          };
-          locals.previousLink = '/domain/' +
-            req.domain.DomainName +
-            '/search?' +
-            querystring.stringify(previousLinkParams);
+          if (start - size >= 0) {
+            var previousLinkParams = {
+              query: query,
+              start: start - size
+            };
+            locals.previousLink = '/domain/' +
+              req.domain.DomainName +
+              '/search?' +
+              querystring.stringify(previousLinkParams);
+          }
         }
 
         res.render('domain-search', locals);
