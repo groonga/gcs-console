@@ -1,0 +1,129 @@
+{
+  "name": "gcs-console",
+  "version": "1.0.0",
+  "dependencies": {
+    "express": {
+      "version": "3.0.0rc5",
+      "dependencies": {
+        "connect": {
+          "version": "2.5.0",
+          "dependencies": {
+            "qs": {
+              "version": "0.5.1"
+            },
+            "formidable": {
+              "version": "1.0.11"
+            },
+            "bytes": {
+              "version": "0.1.0"
+            },
+            "send": {
+              "version": "0.0.4",
+              "dependencies": {
+                "mime": {
+                  "version": "1.2.6"
+                }
+              }
+            },
+            "pause": {
+              "version": "0.0.1"
+            }
+          }
+        },
+        "commander": {
+          "version": "0.6.1"
+        },
+        "range-parser": {
+          "version": "0.0.4"
+        },
+        "mkdirp": {
+          "version": "0.3.3"
+        },
+        "cookie": {
+          "version": "0.0.4"
+        },
+        "crc": {
+          "version": "0.2.0"
+        },
+        "fresh": {
+          "version": "0.1.0"
+        },
+        "methods": {
+          "version": "0.0.1"
+        },
+        "send": {
+          "version": "0.1.0",
+          "dependencies": {
+            "mime": {
+              "version": "1.2.6"
+            }
+          }
+        },
+        "debug": {
+          "version": "0.7.0"
+        }
+      }
+    },
+    "jade": {
+      "version": "0.27.6",
+      "dependencies": {
+        "commander": {
+          "version": "0.6.1"
+        },
+        "mkdirp": {
+          "version": "0.3.4"
+        }
+      }
+    },
+    "awssum": {
+      "version": "0.11.0",
+      "dependencies": {
+        "fmt": {
+          "version": "0.4.0"
+        },
+        "underscore": {
+          "version": "1.4.2"
+        },
+        "xml2js": {
+          "version": "0.1.14",
+          "dependencies": {
+            "sax": {
+              "version": "0.4.2"
+            }
+          }
+        },
+        "dateformat": {
+          "version": "1.0.2-1.2.3"
+        },
+        "xml": {
+          "version": "0.0.7"
+        },
+        "data2xml": {
+          "version": "0.5.0"
+        },
+        "passgen": {
+          "version": "1.0.1",
+          "dependencies": {
+            "vows": {
+              "version": "0.6.4",
+              "dependencies": {
+                "eyes": {
+                  "version": "0.1.8"
+                },
+                "diff": {
+                  "version": "1.0.3"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "underscore": {
+      "version": "1.4.2"
+    },
+    "connect-flash": {
+      "version": "0.1.0"
+    }
+  }
+}
