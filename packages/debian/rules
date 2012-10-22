@@ -1,0 +1,55 @@
+#!/usr/bin/make -f
+# -*- makefile-gmake -*-
+#
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+# This has to be exported to make some magic below work.
+export DH_OPTIONS
+
+%:
+	dh $@
+
+override_dh_clean:
+	rm -rf node_modules npm-debug.log
+	dh_clean
+
+INSTALL_PATHS =					\
+	app.json				\
+	bin/					\
+	lib/					\
+	node_modules/				\
+	package.json				\
+	public/					\
+	routes/					\
+	views/
+
+DESTDIR = debian/tmp
+
+override_dh_install:
+	npm install --production forever
+	npm install --production
+
+	eval $$(dpkg-architecture);				\
+	  if [ -n "$DEB_HOST_MULTIARCH" ]; then			\
+	    libdir=lib/$${DEB_HOST_MULTIARCH};			\
+	  else							\
+	    libdir=lib;						\
+	  fi;							\
+	  gcs_consoledir=/usr/$${libdir}/gcs-console;		\
+	  dest_gcs_consoledir=$(DESTDIR)$${gcs_consoledir};	\
+	  mkdir -p $${dest_gcs_consoledir};			\
+	  cp -a $(INSTALL_PATHS) $${dest_gcs_consoledir}/;	\
+								\
+	  bindir=/usr/bin;					\
+	  dest_bindir=$(DESTDIR)$${bindir};			\
+	  mkdir -p $${dest_bindir};				\
+	  for script in bin/*; do				\
+	    ln -s $${gcsdir}/bin/$$(basename $${script})	\
+	      $${dest_bindir};					\
+	  done;							\
+	  sbindir=/usr/sbin;					\
+	  dest_sbindir=$(DESTDIR)$${sbindir};			\
+	  mkdir -p $${dest_sbindir};				\
+	  mv $${dest_bindir}/gcs-console $${dest_sbindir}/;
+
+	dh_install

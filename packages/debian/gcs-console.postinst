@@ -1,0 +1,39 @@
+#! /bin/sh
+
+set -e
+
+prevver="$2"
+
+add_system_user() {
+    if ! getent passwd gcs-console >/dev/null; then
+        adduser --group --system --home /var/lib/gcs-console gcs-console
+    fi
+}
+
+fixperms() {
+    dpkg-statoverride --list /var/lib/gcs-console >/dev/null || \
+        dpkg-statoverride --update --add gcs-console gcs-console 0750 \
+	    /var/lib/gcs-console
+    dpkg-statoverride --list /var/log/gcs-console >/dev/null || \
+        dpkg-statoverride --update --add gcs-console gcs-console 0750 \
+	    /var/log/gcs-console
+    dpkg-statoverride --list /var/run/gcs-console >/dev/null || \
+        dpkg-statoverride --update --add gcs-console gcs-console 0755 \
+	    /var/run/gcs-console
+}
+
+case "$1" in
+    configure)
+        add_system_user
+        fixperms
+        ;;
+    abort-upgrade|abort-deconfigure|abort-remove)
+        :
+        ;;
+    *)
+        echo "Called with unknown argument $1, bailing out."
+        exit 1
+        ;;
+esac
+
+#DEBHELPER#

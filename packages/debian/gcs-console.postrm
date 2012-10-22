@@ -1,0 +1,18 @@
+#! /bin/sh
+
+set -e
+
+if [ "$1" = "purge" ]; then
+    rm -rf /var/lib/gcs-console/*
+    dpkg-statoverride --remove /var/lib/gcs-console
+    rm -rf /var/log/gcs-console/*
+    dpkg-statoverride --remove /var/log/gcs-console
+    rm -f /var/run/gcs-console/*
+    dpkg-statoverride --remove /var/run/gcs-console
+
+    if getent passwd gcs-console >/dev/null; then
+        deluser --system --remove-home gcs-console
+    fi
+fi
+
+#DEBHELPER#

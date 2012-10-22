@@ -1,1 +1,4 @@
 /node_modules
+/packages/*.tar.gz
+/packages/apt/repositories/
+/packages/apt/tmp/

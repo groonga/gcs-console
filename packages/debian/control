@@ -1,0 +1,24 @@
+Source: gcs-console
+Section: admin
+Priority: optional
+Maintainer: Kouhei Sutou <kou@clear-code.com>
+Build-Depends:
+  debhelper (>= 7.0.50),
+  npm
+Standards-Version: 3.9.1
+Homepage: http://gcs.groonga.org/
+
+Package: gcs-console
+Section: admin
+Architecture: any
+Depends:
+  ${misc:Depends},
+  ${shlibs:Depends},
+  npm
+Description: Groonga CloudSearch administration Web interface
+ Groonga CloudSearch Console is an administration Web interface for
+ Groonga CloudSearch. Administrated Groonga CloudSearch can be ran on
+ the same machine or remote machine.
+ .
+ Groonga CloudSearch Console will be usable for Amazon CloudSearch
+ in the future.
