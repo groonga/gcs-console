@@ -43,7 +43,4 @@ app.get('/domain_create', routes.domainCreate);
 app.post('/domain_create', routes.domainCreatePost);
 app.delete('/domain/:name', routes.domainDelete);
 
-http.createServer(app).listen(app.get('port'), function(){
-  console.log("Groonga CloudSearch Console listening on port " +
-              app.get('port'));
-});
+module.exports.app = app;

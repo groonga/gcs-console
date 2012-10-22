@@ -21,7 +21,10 @@
     "connect-flash": ""
   },
   "scripts": {
-    "start": "node app"
+    "start": "./bin/gcs-console"
+  },
+  "bin": {
+    "gcs-console": "./bin/gcs-console"
   },
   "engines": {
     "node": "~ 0.6.12"
