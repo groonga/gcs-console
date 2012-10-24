@@ -2,6 +2,7 @@
 
 var http = require('http');
 var program = require('commander');
+var version = require('../package').version;
 
 var setupApplication = require('../app.js').setupApplication;
 var express = require('express');
@@ -13,6 +14,7 @@ var defaults = {
 };
 
 program
+  .version(version)
   .option('-p, --port [port]',
           'Port. [' + defaults.port + ']',
           Number,
