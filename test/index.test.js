@@ -4,6 +4,8 @@ var spawn = require('child_process').spawn;
 var mkdirp = require('mkdirp');
 var rimraf = require('rimraf');
 var fs = require('fs');
+var path = require('path');
+var existsSync = fs.existsSync || path.existsSync; // to support older nodes than 0.8
 
 // TODO extract these test helpers to another file
 
@@ -33,7 +35,7 @@ suite('dashboard', function() {
     var gcsConsolePath = __dirname + '/../bin/gcs-console';
     var gcsConsoleOptions = []; // TODO set port of gcs and gcs-console
 
-    if (!fs.existsSync(gcsPath)) {
+    if (!existsSync(gcsPath)) {
       var error = new Error('gcs executable is not found at ' + gcsPath + '. You need to setup gcs to test with gcs-console. Run "npm install gcs" (for the latest release) or "npm install git://github.com/groonga/gcs.git" (for the development)');
       return done(error);
     }
