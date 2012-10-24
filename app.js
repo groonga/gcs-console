@@ -1,46 +1,40 @@
-
-/**
- * Module dependencies.
- */
-
 var express = require('express')
   , routes = require('./routes')
   , http = require('http')
   , path = require('path');
 var flash = require('connect-flash');
 
-var app = express();
+function setupApplication(app) {
+  app.configure(function(){
+    app.set('views', __dirname + '/views');
+    app.set('view engine', 'jade');
+    app.use(express.favicon());
+    app.use(express.logger('dev'));
+    app.use(express.bodyParser());
+    app.use(express.methodOverride());
+    app.use(express.cookieParser('keyboard cat'));
+    app.use(express.session({ cookie: { maxAge: 60000 }}));
+    app.use(flash());
+    app.use((function() {
+      return function(req, res, next) {
+        res.locals.info = req.flash('info');
+        next();
+      }
+    })());
+    app.use(express.static(path.join(__dirname, 'public')));
+    app.use(require('./lib/cloudsearch').cloudsearch(app.get('endpoint')));
+    app.use(app.router);
+  });
 
-app.configure(function(){
-  app.set('port', process.env.GCS_CONSOLE_PORT || 7576);
-  app.set('views', __dirname + '/views');
-  app.set('view engine', 'jade');
-  app.use(express.favicon());
-  app.use(express.logger('dev'));
-  app.use(express.bodyParser());
-  app.use(express.methodOverride());
-  app.use(express.cookieParser('keyboard cat'));
-  app.use(express.session({ cookie: { maxAge: 60000 }}));
-  app.use(flash());
-  app.use((function() {
-    return function(req, res, next) {
-      res.locals.info = req.flash('info');
-      next();
-    }
-  })());
-  app.use(express.static(path.join(__dirname, 'public')));
-  app.use(require('./lib/cloudsearch').cloudsearch());
-  app.use(app.router);
-});
+  app.configure('development', function(){
+  });
 
-app.configure('development', function(){
-});
+  app.get('/', routes.index);
+  app.get('/domain/:name', routes.domain);
+  app.get('/domain/:name/search', routes.domainSearch);
+  app.get('/domain_create', routes.domainCreate);
+  app.post('/domain_create', routes.domainCreatePost);
+  app.delete('/domain/:name', routes.domainDelete);
+}
 
-app.get('/', routes.index);
-app.get('/domain/:name', routes.domain);
-app.get('/domain/:name/search', routes.domainSearch);
-app.get('/domain_create', routes.domainCreate);
-app.post('/domain_create', routes.domainCreatePost);
-app.delete('/domain/:name', routes.domainDelete);
-
-module.exports.app = app;
+module.exports.setupApplication = setupApplication;

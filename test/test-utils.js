@@ -20,11 +20,13 @@ function runServer(path, options, callback) {
 }
 
 var Target = function() {
+  this.gcsConsolePort = 3335;
+  this.gcsPort = 3334;
   this.databaseDir = __dirname + '/../test/tmp/gcs';
   this.databasePath = this.databaseDir + '/gcs';
   this.gcsPath = __dirname + '/../node_modules/.bin/gcs';
   this.gcsConsolePath = __dirname + '/../bin/gcs-console';
-  this.rootURL = 'http://localhost:7576/' // TODO make this configurable
+  this.rootURL = 'http://localhost:' + this.gcsConsolePort + '/';
 };
 
 Target.prototype = {
@@ -33,9 +35,13 @@ Target.prototype = {
   setup: function(done) {
     var self = this;
     var gcsOptions = [
-      '--database-path', self.databasePath
-    ]; // TODO set port for gcs
-    var gcsConsoleOptions = []; // TODO set port of gcs and gcs-console
+      '--database-path', self.databasePath,
+      '--port', self.gcsPort
+    ];
+    var gcsConsoleOptions = [
+      '--port', self.gcsConsolePort,
+      '--endpoint', 'http://localhost:' + self.gcsPort
+    ];
 
     if (!existsSync(self.gcsPath)) {
       var error = new Error('gcs executable is not found at ' + self.gcsPath + '. You need to setup gcs to test with gcs-console. Run "npm install gcs" (for the latest release) or "npm install git://github.com/groonga/gcs.git" (for the development)');
