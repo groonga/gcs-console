@@ -25,7 +25,8 @@
     "underscore": "",
     "connect-flash": "",
     "mkdirp": "",
-    "rimraf": ""
+    "rimraf": "",
+    "commander": ""
   },
   "scripts": {
     "test": "NODE_ENV=test ./node_modules/.bin/mocha --reporter list --ui tdd",

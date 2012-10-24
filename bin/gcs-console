@@ -2,6 +2,13 @@
 
 var app = require(__dirname + '/../app').app;
 var http = require('http');
+var program = require('commander');
+
+program
+  .option('-p, --port [port]', 'Port')
+  .parse(process.argv);
+
+if (program.port) app.set('port', program.port);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Groonga CloudSearch Console listening on port " +
