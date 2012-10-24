@@ -47,6 +47,9 @@ Target.prototype = {
         self.gcsConsolePath,
         gcsConsoleOptions,
         function() {
+          process.on('exit', function() {
+            self.teardown();
+          });
           done();
         }
       )
