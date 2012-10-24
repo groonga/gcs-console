@@ -50,13 +50,13 @@ Target.prototype = {
 
     mkdirp.sync(self.databaseDir);
     self.gcs = runServer(self.gcsPath, gcsOptions, function() {
+      process.on('exit', function() {
+        self.teardown();
+      });
       self.gcsConsole = runServer(
         self.gcsConsolePath,
         gcsConsoleOptions,
         function() {
-          process.on('exit', function() {
-            self.teardown();
-          });
           done();
         }
       )
