@@ -13,7 +13,7 @@ suite('dashboard', function() {
 
   test('GET /', function(done) {
     var browser = new Browser();
-    browser.visit('http://localhost:7576'). // TODO make this configurable
+    browser.visit(target.rootURL).
       then(function() {
         assert.ok(browser.success);
         assert.equal(browser.text('title'), 'Groonga CloudSearch Console');

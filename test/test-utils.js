@@ -24,6 +24,7 @@ var Target = function() {
   this.databasePath = this.databaseDir + '/gcs';
   this.gcsPath = __dirname + '/../node_modules/.bin/gcs';
   this.gcsConsolePath = __dirname + '/../bin/gcs-console';
+  this.rootURL = 'http://localhost:7576/' // TODO make this configurable
 };
 
 Target.prototype = {
