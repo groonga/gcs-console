@@ -29,7 +29,7 @@
     "commander": ""
   },
   "scripts": {
-    "test": "NODE_ENV=test ./node_modules/.bin/mocha --reporter list --ui tdd",
+    "test": "NODE_ENV=test ./node_modules/.bin/mocha --reporter list --ui tdd --timeout 5s",
     "start": "./bin/gcs-console"
   },
   "bin": {
