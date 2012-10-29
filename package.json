@@ -1,7 +1,7 @@
 {
   "name": "gcs-console",
   "description": "Groonga CloudSearch Console",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "Groonga CloudSearch project <gcs@groonga.org>",
   "license": "MIT",
   "keywords": ["Amazon CloudSearch", "groonga", "fulltext", "search", "database"],
