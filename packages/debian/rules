@@ -14,7 +14,7 @@ override_dh_clean:
 	dh_clean
 
 INSTALL_PATHS =					\
-	app.json				\
+	app.js					\
 	bin/					\
 	lib/					\
 	node_modules/				\
