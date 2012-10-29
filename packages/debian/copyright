@@ -314,6 +314,7 @@ License:
 
 Files:
 
+    node_modules/commander/*
     node_modules/express/node_modules/commander/*
     node_modules/jade/node_modules/commander/*
 
@@ -658,6 +659,7 @@ License:
 
 Files:
 
+    node_modules/mkdirp/*
     node_modules/express/node_modules/mkdirp/*
     node_modules/jade/node_modules/mkdirp/*
 
@@ -787,6 +789,18 @@ License:
     CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+Files:
+
+    node_modules/rimraf/*
+
+Copyright:
+
+    TODO
+
+License:
+
+    TODO
 
 Files: node_modules/underscore/*
 
