@@ -1,12 +1,12 @@
 {
   "name": "gcs-console",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "dependencies": {
     "express": {
-      "version": "3.0.0rc5",
+      "version": "3.0.0",
       "dependencies": {
         "connect": {
-          "version": "2.5.0",
+          "version": "2.6.0",
           "dependencies": {
             "qs": {
               "version": "0.5.1"
@@ -173,7 +173,7 @@
       }
     },
     "zombie": {
-      "version": "2.0.0-alpha7",
+      "version": "2.0.0-alpha8",
       "dependencies": {
         "contextify": {
           "version": "0.1.3",
@@ -236,7 +236,7 @@
           }
         },
         "jsdom": {
-          "version": "0.2.18",
+          "version": "0.2.19",
           "dependencies": {
             "htmlparser": {
               "version": "1.7.6"
