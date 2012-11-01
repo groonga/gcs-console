@@ -1,6 +1,12 @@
 extends domain
 
 block domain-content
+  h2 Domain Summary
+  table.table.table-bordered
+    tr
+      th Number of searchable docs
+      td= domain.NumSearchableDocs
+
   h2 Endpoints
   table.table.table-bordered
     tr
