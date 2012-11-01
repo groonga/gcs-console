@@ -5,6 +5,16 @@ var express = require('express')
 var flash = require('connect-flash');
 
 function setupApplication(app) {
+  var auth = function(req, res, next) {
+    // middleware that does nothing
+    next();
+  };
+
+  var user = app.get('user'), password = app.get('password');
+  if (user && password) {
+    auth = express.basicAuth(user, password);
+  }
+
   app.configure(function(){
     app.set('views', __dirname + '/views');
     app.set('view engine', 'jade');
@@ -29,12 +39,12 @@ function setupApplication(app) {
   app.configure('development', function(){
   });
 
-  app.get('/', routes.index);
-  app.get('/domain/:name', routes.domain);
-  app.get('/domain/:name/search', routes.domainSearch);
-  app.get('/domain_create', routes.domainCreate);
-  app.post('/domain_create', routes.domainCreatePost);
-  app.delete('/domain/:name', routes.domainDelete);
+  app.get('/', auth, routes.index);
+  app.get('/domain/:name', auth, routes.domain);
+  app.get('/domain/:name/search', auth, routes.domainSearch);
+  app.get('/domain_create', auth, routes.domainCreate);
+  app.post('/domain_create', auth, routes.domainCreatePost);
+  app.delete('/domain/:name', auth, routes.domainDelete);
 }
 
 module.exports.setupApplication = setupApplication;
