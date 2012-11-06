@@ -3,10 +3,10 @@
   "version": "1.1.0",
   "dependencies": {
     "express": {
-      "version": "3.0.0",
+      "version": "3.0.1",
       "dependencies": {
         "connect": {
-          "version": "2.6.0",
+          "version": "2.6.2",
           "dependencies": {
             "qs": {
               "version": "0.5.1"
@@ -16,14 +16,6 @@
             },
             "bytes": {
               "version": "0.1.0"
-            },
-            "send": {
-              "version": "0.0.4",
-              "dependencies": {
-                "mime": {
-                  "version": "1.2.6"
-                }
-              }
             },
             "pause": {
               "version": "0.0.1"
@@ -59,16 +51,22 @@
             }
           }
         },
+        "cookie-signature": {
+          "version": "0.0.1"
+        },
         "debug": {
           "version": "0.7.0"
         }
       }
     },
     "jade": {
-      "version": "0.27.6",
+      "version": "0.27.7",
       "dependencies": {
         "commander": {
           "version": "0.6.1"
+        },
+        "coffee-script": {
+          "version": "1.4.0"
         }
       }
     },
