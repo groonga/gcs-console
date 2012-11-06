@@ -22,3 +22,21 @@ block domain-content
           default
             td
             td
+
+  .well
+    form(action="/domain/"+domain.DomainName+"/index_fields", method="POST").form-horizontal
+      legend Create an index field
+      .control-group
+        label.control-label Name
+        .controls
+          input(type="text", name="name")
+      .control-group
+        label.control-label Type
+        .controls
+          select(type="text", name="type")
+            option(value="text") text
+            option(value="literal") literal
+            option(value="uint") uint
+      .control-group
+        .controls
+          button.btn(type="submit").btn-primary Create

@@ -11,7 +11,7 @@ suite('dashboard', function() {
     target.teardown()
   });
 
-  test('Create domain and navigate to index fields tab', function(done) {
+  test('Create domain and add an index field', function(done) {
     var browser = new Browser();
     browser
       .visit(target.rootURL)
@@ -27,6 +27,13 @@ suite('dashboard', function() {
       })
       .then(function() {
         assert.equal(browser.location.pathname, "/domain/test/index_fields");
+      })
+      .then(function() {
+        browser.fill('name', 'test');
+        return browser.pressButton('Create')
+      })
+      .then(function() {
+        assert.equal(browser.text(".alert"), "IndexField successfully created");
       })
       .then(done, done);
   });

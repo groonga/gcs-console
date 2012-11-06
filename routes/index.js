@@ -42,6 +42,16 @@ function convertToArray(data) {
   }
 }
 
+function errorToRender(error) {
+  var errorToRender = null;
+  try {
+    errorToRender = new Error(error.Body.Response.Errors.Error.Message);
+  } catch(e) {
+    errorToRender = e;
+  }
+  return errorToRender;
+}
+
 exports.domain = function(req, res) {
   withDomain(req, res, function(req, res) {
     res.render('domain-show', {
@@ -162,18 +172,11 @@ exports.domainCreatePost = function(req, res) {
         return;
       }
 
-      var errorToRender = null;
-      try {
-        errorToRender = new Error(error.Body.Response.Errors.Error.Message)
-      } catch(e) {
-        errorToRender = e;
-      };
-
       res.render('domain-create', {
         action: "domain_create",
         domain: null,
         creatingDomainName: domainName,
-        error: errorToRender
+        error: errorToRender(error)
       });
       return;
     }
@@ -196,5 +199,30 @@ exports.domainDelete = function(req, res) {
 
     req.flash('info', 'Domain successfully deleted');
     res.redirect('/');
+  });
+};
+
+exports.domainCreateIndexField = function(req, res) {
+  withDomain(req, res, function(req, res) {
+    req.cloudsearch.DefineIndexField({
+      DomainName: req.domain.DomainName,
+      IndexField: {
+        IndexFieldName: req.body.name,
+        IndexFieldType: req.body.type
+      }
+    }, function(error, data) {
+      if (error) {
+        res.status(500);
+        res.render('domain-index-fields', {
+          error: errorToRender(error),
+          action: 'domain_index_fields',
+          domain: req.domain,
+          indexFields: req.indexFields
+        });
+        return;
+      }
+      req.flash('info', 'IndexField successfully created');
+      res.redirect('/domain/' + req.domain.DomainName);
+    });
   });
 };
