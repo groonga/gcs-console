@@ -8,5 +8,7 @@ block content
       a(href="/domain/"+domain.DomainName) About
     li(class=(action == "domain_search" ? "active" : ""))
       a(href="/domain/"+domain.DomainName+"/search") Search
+    li(class=(action == "domain_index_fields" ? "active" : ""))
+      a(href="/domain/"+domain.DomainName+"/index_fields") Index Fields
 
   block domain-content

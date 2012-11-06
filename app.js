@@ -42,6 +42,7 @@ function setupApplication(app) {
   app.get('/', auth, routes.index);
   app.get('/domain/:name', auth, routes.domain);
   app.get('/domain/:name/search', auth, routes.domainSearch);
+  app.get('/domain/:name/index_fields', auth, routes.domainIndexFields);
   app.get('/domain_create', auth, routes.domainCreate);
   app.post('/domain_create', auth, routes.domainCreatePost);
   app.delete('/domain/:name', auth, routes.domainDelete);

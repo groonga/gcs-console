@@ -46,6 +46,15 @@ exports.domain = function(req, res) {
   withDomain(req, res, function(req, res) {
     res.render('domain-show', {
       action: 'domain_show',
+      domain: req.domain
+    });
+  });
+};
+
+exports.domainIndexFields = function(req, res) {
+  withDomain(req, res, function(req, res) {
+    res.render('domain-index-fields', {
+      action: 'domain_index_fields',
       domain: req.domain,
       indexFields: req.indexFields
     });
