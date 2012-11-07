@@ -27,6 +27,7 @@ suite('dashboard', function() {
       })
       .then(function() {
         assert.equal(browser.location.pathname, "/domain/test/index_fields");
+        assert.equal(browser.text('.alert-warn'), "No IndexField is defined");
       })
       .then(function() {
         browser.fill('name', 'test');
