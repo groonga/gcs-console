@@ -11,7 +11,7 @@ suite('dashboard', function() {
     target.teardown()
   });
 
-  test('Create domain and add an index field', function(done) {
+  test('Create domain, add an index field and delete the index field', function(done) {
     var browser = new Browser();
     browser
       .visit(target.rootURL)
@@ -36,6 +36,13 @@ suite('dashboard', function() {
       .then(function() {
         assert.equal(browser.location.pathname, "/domain/test/index_fields");
         assert.equal(browser.text(".alert"), "IndexField successfully created");
+      })
+      .then(function() {
+        return browser.pressButton('Delete')
+      })
+      .then(function() {
+        assert.equal(browser.location.pathname, "/domain/test/index_fields");
+        assert.equal(browser.text('.alert-warn'), "No IndexField is defined");
       })
       .then(done, done);
   });

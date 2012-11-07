@@ -9,6 +9,7 @@ block domain-content
         th Type
         th Facet
         th Result
+        th Operation
       for indexField in indexFields
         tr
           th= indexField.Options.IndexFieldName
@@ -23,6 +24,13 @@ block domain-content
             default
               td
               td
+          td
+            form(action="/domain/"+domain.DomainName+"/index_fields/"+indexField.Options.IndexFieldName, method="POST").modal-form
+              input(type="hidden", name="_method", value="DELETE")
+              button(type="submit").btn.btn-danger
+                i.icon-trash.icon-white
+                |  Delete
+                // TODO confirmation
   else
     .alert.alert-warn No IndexField is defined
 

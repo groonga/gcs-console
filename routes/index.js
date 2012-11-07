@@ -226,3 +226,25 @@ exports.domainCreateIndexField = function(req, res) {
     });
   });
 };
+
+exports.domainDeleteIndexField = function(req, res) {
+  withDomain(req, res, function(req, res) {
+    req.cloudsearch.DeleteIndexField({
+      DomainName: req.domain.DomainName,
+      IndexFieldName: req.params.indexFieldName
+    }, function(error, data) {
+      if (error) {
+        res.status(500);
+        res.render('domain-index-fields', {
+          error: errorToRender(error),
+          action: 'domain_index_fields',
+          domain: req.domain,
+          indexFields: req.indexFields
+        });
+        return;
+      }
+      req.flash('info', 'IndexField successfully created');
+      res.redirect('/domain/' + req.domain.DomainName + '/index_fields');
+    });
+  });
+};

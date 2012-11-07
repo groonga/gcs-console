@@ -46,6 +46,7 @@ function setupApplication(app) {
   app.get('/domain_create', auth, routes.domainCreate);
   app.post('/domain_create', auth, routes.domainCreatePost);
   app.post('/domain/:name/index_fields', auth, routes.domainCreateIndexField);
+  app.delete('/domain/:name/index_fields/:indexFieldName', auth, routes.domainDeleteIndexField);
   app.delete('/domain/:name', auth, routes.domainDelete);
 }
 
