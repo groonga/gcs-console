@@ -2,26 +2,29 @@ extends domain
 
 block domain-content
   h2 Index Fields
-  table.table.table-bordered
-    tr
-      th Name
-      th Type
-      th Facet
-      th Result
-    for indexField in indexFields
+  if indexFields.length > 0
+    table.table.table-bordered
       tr
-        th= indexField.Options.IndexFieldName
-        td= indexField.Options.IndexFieldType
-        case indexField.Options.IndexFieldType
-          when 'text'
-            td= indexField.Options.TextOptions.FacetEnabled
-            td= indexField.Options.TextOptions.ResultEnabled
-          when 'literal'
-            td= indexField.Options.LiteralOptions.FacetEnabled
-            td= indexField.Options.LiteralOptions.ResultEnabled
-          default
-            td
-            td
+        th Name
+        th Type
+        th Facet
+        th Result
+      for indexField in indexFields
+        tr
+          th= indexField.Options.IndexFieldName
+          td= indexField.Options.IndexFieldType
+          case indexField.Options.IndexFieldType
+            when 'text'
+              td= indexField.Options.TextOptions.FacetEnabled
+              td= indexField.Options.TextOptions.ResultEnabled
+            when 'literal'
+              td= indexField.Options.LiteralOptions.FacetEnabled
+              td= indexField.Options.LiteralOptions.ResultEnabled
+            default
+              td
+              td
+  else
+    .alert.alert-warn No IndexField is defined
 
   .well
     form(action="/domain/"+domain.DomainName+"/index_fields", method="POST").form-horizontal
