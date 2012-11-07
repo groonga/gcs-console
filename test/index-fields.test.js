@@ -33,6 +33,7 @@ suite('dashboard', function() {
         return browser.pressButton('Create')
       })
       .then(function() {
+        assert.equal(browser.location.pathname, "/domain/test/index_fields");
         assert.equal(browser.text(".alert"), "IndexField successfully created");
       })
       .then(done, done);

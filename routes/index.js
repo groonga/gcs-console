@@ -222,7 +222,7 @@ exports.domainCreateIndexField = function(req, res) {
         return;
       }
       req.flash('info', 'IndexField successfully created');
-      res.redirect('/domain/' + req.domain.DomainName);
+      res.redirect('/domain/' + req.domain.DomainName + '/index_fields');
     });
   });
 };
