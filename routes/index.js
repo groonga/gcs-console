@@ -202,15 +202,43 @@ exports.domainDelete = function(req, res) {
   });
 };
 
+function onToTrue(str) {
+  if (str === 'on') {
+    return 'true';
+  } else {
+    return 'false';
+  }
+}
+
 exports.domainCreateIndexField = function(req, res) {
   withDomain(req, res, function(req, res) {
-    req.cloudsearch.DefineIndexField({
+    var request = {
       DomainName: req.domain.DomainName,
       IndexField: {
         IndexFieldName: req.body.name,
         IndexFieldType: req.body.type
       }
-    }, function(error, data) {
+    };
+
+    switch (req.body.type) {
+      case 'text':
+        request.IndexField.TextOptions = {
+          FacetEnabled: onToTrue(req.body.facet),
+          ResultEnabled: onToTrue(req.body.result)
+        };
+        break;
+      case 'literal':
+        request.IndexField.LiteralOptions = {
+          FacetEnabled: onToTrue(req.body.facet),
+          ResultEnabled: onToTrue(req.body.result),
+          SearchEnabled: onToTrue(req.body.search)
+        };
+        break;
+      case 'uint':
+        break;
+    }
+
+    var doneCallback = function(error, data) {
       if (error) {
         res.status(500);
         res.render('domain-index-fields', {
@@ -223,7 +251,9 @@ exports.domainCreateIndexField = function(req, res) {
       }
       req.flash('info', 'IndexField successfully created');
       res.redirect('/domain/' + req.domain.DomainName + '/index_fields');
-    });
+    };
+
+    req.cloudsearch.DefineIndexField(request, doneCallback);
   });
 };
 

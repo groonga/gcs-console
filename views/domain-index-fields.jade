@@ -49,5 +49,17 @@ block domain-content
             option(value="literal") literal
             option(value="uint") uint
       .control-group
+        label.control-label Search
+        .controls
+          input(type="checkbox", name="search")
+      .control-group
+        label.control-label Facet
+        .controls
+          input(type="checkbox", name="facet")
+      .control-group
+        label.control-label Result
+        .controls
+          input(type="checkbox", name="result")
+      .control-group
         .controls
           button.btn(type="submit").btn-primary Create
