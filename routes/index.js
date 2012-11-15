@@ -306,7 +306,7 @@ exports.domainDeleteIndexField = function(req, res) {
         });
         return;
       }
-      req.flash('info', 'IndexField successfully created');
+      req.flash('info', 'IndexField successfully deleted');
       res.redirect('/domain/' + req.domain.DomainName + '/index_fields');
     });
   });

@@ -43,6 +43,7 @@ suite('dashboard', function() {
         return browser.pressButton('Delete')
       })
       .then(function() {
+        assert.equal(browser.text(".alert-info"), "IndexField successfully deleted");
         assert.equal(browser.location.pathname, "/domain/test/index_fields");
         assert.equal(browser.text('.alert-warn'), "No IndexField is defined");
       })
