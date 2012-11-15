@@ -25,12 +25,24 @@ block domain-content
               td
               td
           td
-            form(action="/domain/"+domain.DomainName+"/index_fields/"+indexField.Options.IndexFieldName, method="POST").modal-form
-              input(type="hidden", name="_method", value="DELETE")
-              button(type="submit").btn.btn-danger
-                i.icon-trash.icon-white
-                |  Delete
-                // TODO confirmation
+            a.btn.btn-danger.pull-right(role="button", data-toggle="modal", data-target="#deleteDialog-"+indexField.Options.IndexFieldName)
+              i.icon-trash.icon-white
+              |  Delete
+
+    for indexField in indexFields
+      .modal.hide(id="deleteDialog-"+indexField.Options.IndexFieldName, role="dialog", tabindex="-1", aria-labelledby="deleteDialogLabel", aria-hidden="true")
+        .modal-header
+          button.close(type="button", data-dismiss="modal", aria-hidden="true") &times;
+          h3#deleteDialogLabel Delete '#{indexField.Options.IndexFieldName}' Index Field
+        .modal-body
+          p Are you sure?
+        .modal-footer
+          form(action="/domain/"+domain.DomainName+"/index_fields/"+indexField.Options.IndexFieldName, method="POST").modal-form
+            input(type="hidden", name="_method", value="DELETE")
+            button.btn(data-dismiss="modal", aria-hidden="true") Cancel
+            button.btn(type="submit").btn.btn-danger
+              i.icon-trash.icon-white
+              |  Delete
   else
     .alert.alert-warn No IndexField is defined
 

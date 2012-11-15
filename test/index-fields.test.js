@@ -38,6 +38,8 @@ suite('dashboard', function() {
         assert.equal(browser.text(".alert"), "IndexField successfully created");
       })
       .then(function() {
+        assert.equal(browser.text("h3"), "Delete 'test' Index Field");
+        assert.equal(browser.text(".modal-body p"), "Are you sure?");
         return browser.pressButton('Delete')
       })
       .then(function() {
