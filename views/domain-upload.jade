@@ -1,0 +1,13 @@
+extends domain
+
+block domain-content
+  h2 Upload SDF Batch
+
+  form(action="/domain/"+domain.DomainName+"/upload", method="post", enctype="multipart/form-data").form-horizontal
+    .control-group
+      label.control-label SDF Batch
+      .controls
+        input(type="file", name="batch")
+    .control-group
+      .controls
+        button.btn.btn-primary(type="submit") Upload

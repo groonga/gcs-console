@@ -10,5 +10,7 @@ block content
       a(href="/domain/"+domain.DomainName+"/search") Search
     li(class=(action == "domain_index_fields" ? "active" : ""))
       a(href="/domain/"+domain.DomainName+"/index_fields") Index Fields
+    li(class=(action == "domain_upload" ? "active" : ""))
+      a(href="/domain/"+domain.DomainName+"/upload") Upload
 
   block domain-content

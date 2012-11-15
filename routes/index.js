@@ -1,16 +1,49 @@
 var querystring = require('querystring');
 var _ = require('underscore');
 var http = require('http');
+var awssum = require('awssum');
+var DocumentService = awssum.load('amazon/cloudsearch').DocumentService;
+var url = require('url');
+var fs = require('fs');
 
 exports.index = function(req, res) {
   res.render('index', {action: 'index'});
 };
+
+function countBytes(string) {
+  string = encodeURIComponent(string);
+  var escapedPartsMatcher = /\%[0-9a-f][0-9a-f]/gi;
+  var escapedParts = string.match(escapedPartsMatcher);
+  var notEscapedParts = string.replace(escapedPartsMatcher, '');
+  return notEscapedParts.length + (escapedParts ? escapedParts.length : 0);
+}
+
+function createGcsDocumentService(domain) {
+  var documentService = new DocumentService({
+    domainName: domain.DomainName,
+    domainId: domain.DomainId
+  });
+  var endpoint = url.parse('http://' + domain.DocService.Endpoint);
+  documentService.host = function() {
+    return endpoint.hostname;
+  };
+  documentService.addExtras = function(options, args) {
+    options.protocol = endpoint.protocol;
+    options.port = endpoint.port;
+  };
+  documentService.addCommonOptions = function(options, args) {
+    options.headers['content-type'] = 'application/json';
+    options.headers['content-length'] = countBytes(JSON.stringify(args.Docs));
+  };
+  return documentService;
+}
 
 function withDomain(req, res, callback) {
   var domain = _.where(res.locals.domains, {DomainName: req.params.name})[0];
   domain.isSelected = true;
 
   req.domain = domain;
+  req.documentService = createGcsDocumentService(domain);
 
   // get index fields
   req.cloudsearch.DescribeIndexFields({
@@ -275,6 +308,47 @@ exports.domainDeleteIndexField = function(req, res) {
       }
       req.flash('info', 'IndexField successfully created');
       res.redirect('/domain/' + req.domain.DomainName + '/index_fields');
+    });
+  });
+};
+
+exports.domainUpload = function(req, res) {
+  withDomain(req, res, function(req, res) {
+    res.render('domain-upload', {
+      action: 'domain_upload',
+      domain: req.domain
+    });
+  });
+};
+
+exports.domainUploadPost = function(req, res) {
+  withDomain(req, res, function(req, res) {
+    fs.readFile(req.files.batch.path, function(err, data) {
+      try {
+        var docs = JSON.parse(data);
+      } catch(e) {
+        res.status(400);
+        res.render('domain-upload', {
+          action: 'domain_upload',
+          domain: req.domain,
+          error: new Error('Failed to parse JSON')
+        });
+      }
+      var options = { Docs: docs };
+
+      req.documentService.DocumentsBatch(options, function(err, data) {
+        if (err) {
+          res.status(400);
+          res.render('domain-upload', {
+            action: 'domain_upload',
+            domain: req.domain,
+            error: errorToRender(err)
+          });
+        }
+
+        req.flash('info', 'SDF Batch Uploaded');
+        res.redirect('/domain/' + req.domain.DomainName + '/upload');
+      });
     });
   });
 };
