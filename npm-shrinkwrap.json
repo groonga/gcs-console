@@ -3,10 +3,10 @@
   "version": "1.1.0",
   "dependencies": {
     "express": {
-      "version": "3.0.1",
+      "version": "3.0.3",
       "dependencies": {
         "connect": {
-          "version": "2.6.2",
+          "version": "2.7.0",
           "dependencies": {
             "qs": {
               "version": "0.5.1"
@@ -32,7 +32,7 @@
           "version": "0.3.3"
         },
         "cookie": {
-          "version": "0.0.4"
+          "version": "0.0.5"
         },
         "crc": {
           "version": "0.2.0"
@@ -71,7 +71,7 @@
       }
     },
     "awssum": {
-      "version": "0.11.0",
+      "version": "0.12.1",
       "dependencies": {
         "fmt": {
           "version": "0.4.0"
@@ -85,19 +85,19 @@
           }
         },
         "dateformat": {
-          "version": "1.0.2-1.2.3"
+          "version": "1.0.3-1.2.3"
         },
         "xml": {
           "version": "0.0.7"
         },
         "data2xml": {
-          "version": "0.5.0"
+          "version": "0.4.0"
         },
         "passgen": {
           "version": "1.0.1",
           "dependencies": {
             "vows": {
-              "version": "0.6.4",
+              "version": "0.7.0",
               "dependencies": {
                 "eyes": {
                   "version": "0.1.8"
@@ -129,7 +129,7 @@
       }
     },
     "commander": {
-      "version": "1.0.5",
+      "version": "1.1.1",
       "dependencies": {
         "keypress": {
           "version": "0.1.0"
@@ -234,7 +234,7 @@
           }
         },
         "jsdom": {
-          "version": "0.2.19",
+          "version": "0.2.18",
           "dependencies": {
             "htmlparser": {
               "version": "1.7.6"
