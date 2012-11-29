@@ -12,5 +12,12 @@ setgid gcs-console
 script
   HOME=`echo ~gcs-console`
   export HOME
+
+  DEFAULT_FILE=/etc/default/gcs-console
+  [ -r $DEFAULT_FILE ] && . $DEFAULT_FILE
+  export GCS_CONSOLE_ENDPOINT
+  export GCS_CONSOLE_PORT
+  export GCS_CONSOLE_AUTH
+
   exec /usr/sbin/gcs-console
 end script

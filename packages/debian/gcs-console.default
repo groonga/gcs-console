@@ -1,7 +1,17 @@
 # Default
 #USER=gcs-console
 #GROUP=gcs-console
-#PORT=7576
+
+# The endpoint of the configuration API of your Groonga CloudSearch instance.
+GCS_CONSOLE_ENDPOINT=http://localhost:7575
+
+# The port number to listen
+GCS_CONSOLE_PORT=7576
+
+# A pair of username and password (plaintext, not encrypted)
+# For example, if you wish to use "admin" as the username and "abcd1234", then:
+#   GCS_CONSOLE_AUTH=admin:abcd1234
+GCS_CONSOLE_AUTH=
 
 # Comment out this to disable Groonga CloudSearch Console daemon.
 ENABLE=yes

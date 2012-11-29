@@ -24,7 +24,6 @@ FOREVER=$LIB_DIR/gcs-console/node_modules/.bin/forever
 LOG_DIR=/var/log/$NAME
 USER=gcs-console
 GROUP=gcs-console
-PORT=7576
 PIDFILE=/var/run/gcs-console/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME
 NODE_ENV=production
@@ -42,6 +41,9 @@ DEFAULT_FILE=/etc/default/$NAME
 
 # Read configuration variable file if it is present
 [ -r $DEFAEULT_FILE ] && . $DEFAULT_FILE
+export GCS_CONSOLE_ENDPOINT
+export GCS_CONSOLE_PORT
+export GCS_CONSOLE_AUTH
 
 [ "$ENABLE" = "yes" ] || exit 0
 
