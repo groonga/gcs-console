@@ -11,8 +11,8 @@ var app = express();
 var defaults = {
   port: process.env.GCS_CONSOLE_PORT || 7576,
   endpoint: process.env.GCS_CONSOLE_ENDPOINT || 'http://localhost:7575',
-  auth: process.env.GCS_CONSOLE_AUTH || ''
-};
+  gcsConsoleHome: process.env.GCS_CONSOLE_HOME || process.env.HOME + '/.gcs-console'
+}
 
 program
   .version(version)
@@ -24,33 +24,21 @@ program
           'Endpoint of Target Server. [' + defaults.endpoint + ']',
           String,
           defaults.endpoint)
-  .option('--auth <user:password>',
-          'Request basic authorizatoin',
-          String)
+  .option('--gcs-console-home [path]',
+          'Config file path [' + defaults.gcsConsoleHome + ']',
+          String,
+          defaults.gcsConsoleHome)
   .parse(process.argv);
 
 app.set('port', program.port);
 app.set('endpoint', program.endpoint);
-
-if (program.auth) {
-  var match = program.auth.match(/^(.*?):(.*)$/);
-  if (match) {
-    var user = match[1], password = match[2];
-    app.set('user', user);
-    app.set('password', password);
-    console.log('Basic authorization for user <' + user + '> is activated');
-  } else {
-    console.log('You must specify the parameter for --auth in user:password');
-    process.exit(-1);
-  }
-} else {
-  console.log('Basic authorization is not configured. Anyone can control your Groonga CloudSearch Console.');
-}
+app.set('home', program.gcsConsoleHome);
 
 setupApplication(app);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Groonga CloudSearch Console listening on port " +
               app.get('port'));
+  console.log('Groonga CloudSearch home is at ' + app.get('home'));
   console.log('Backend is ' + app.get('endpoint'));
 });

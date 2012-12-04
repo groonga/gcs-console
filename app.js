@@ -3,17 +3,23 @@ var express = require('express')
   , http = require('http')
   , path = require('path');
 var flash = require('connect-flash');
+var Config = require('./lib/config').Config;
 
 function setupApplication(app) {
-  var auth = function(req, res, next) {
-    // middleware that does nothing
-    next();
-  };
+  var auth;
 
-  var user = app.get('user'), password = app.get('password');
-  if (user && password) {
-    auth = express.basicAuth(user, password);
-  }
+  var config = new Config(app.get('home'));
+  app.set('config', config);
+
+  auth = function(req, res, next) {
+    var username = config.data.adminUsername;
+    var password = config.data.adminPassword;
+    if (username && password) {
+      return express.basicAuth(username, password)(req, res, next);
+    } else {
+      return res.redirect('/admin/password');
+    }
+  };
 
   app.configure(function(){
     app.set('views', __dirname + '/views');
@@ -50,6 +56,9 @@ function setupApplication(app) {
   app.post('/domain/:name/index_fields', auth, routes.domainCreateIndexField);
   app.delete('/domain/:name/index_fields/:indexFieldName', auth, routes.domainDeleteIndexField);
   app.delete('/domain/:name', auth, routes.domainDelete);
+
+  app.get('/admin/password', routes.adminPassword);
+  app.post('/admin/password', routes.adminPasswordPost);
 }
 
 module.exports.setupApplication = setupApplication;

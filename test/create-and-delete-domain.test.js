@@ -2,10 +2,15 @@ var assert = require('chai').assert;
 var Browser = require('zombie');
 var Target = require('./test-utils').Target;
 
+var config = {
+  adminUsername: 'user',
+  adminPassword: 'pass'
+};
+
 suite('dashboard', function() {
   var target = new Target();
   setup(function(done) {
-    target.setup(done)
+    target.setup(done, config)
   });
   teardown(function() {
     target.teardown()
@@ -13,6 +18,7 @@ suite('dashboard', function() {
 
   test('Create and delete a domain', function(done) {
     var browser = new Browser();
+    browser.authenticate().basic('user', 'pass');
     browser
       .visit(target.rootURL)
       .then(function() {

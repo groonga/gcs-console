@@ -2,10 +2,15 @@ var assert = require('chai').assert;
 var Browser = require('zombie');
 var Target = require('./test-utils').Target;
 
+var config = {
+  adminUsername: 'user',
+  adminPassword: 'pass'
+};
+
 suite('dashboard', function() {
   var target = new Target();
   setup(function(done) {
-    target.setup(done)
+    target.setup(done, config)
   });
   teardown(function() {
     target.teardown()
@@ -13,6 +18,7 @@ suite('dashboard', function() {
 
   test('Create, upload and search', function(done) {
     var browser = new Browser();
+    browser.authenticate().basic('user', 'pass');
     browser
       .visit(target.rootURL)
       .then(function() {
@@ -72,7 +78,7 @@ suite('dashboard', function() {
       .then(function() {
         // Zombie.js does not handle GET form at this time.
         // So hit the search result page directly.
-        return browser.visit('/domain/companies/search?query=tokyo');
+        return browser.visit(target.rootURL + 'domain/companies/search?query=tokyo');
       })
       .then(function() {
         assert.equal(browser.text('.alert-info'), 'Found 3 records. Showing 1 - 3 (3 records).');

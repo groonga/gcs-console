@@ -27,15 +27,13 @@ var Target = function(options) {
   this.gcsPath = __dirname + '/../node_modules/.bin/gcs';
   this.gcsConsolePath = __dirname + '/../bin/gcs-console';
   this.rootURL = 'http://localhost:' + this.gcsConsolePort + '/';
-  if (options) {
-    this.auth = options.auth;
-  }
+  this.gcsConsoleHome = this.databaseDir + '/gcs-console';
 };
 
 Target.prototype = {
   gcs: null,
   gcsConsole: null,
-  setup: function(done) {
+  setup: function(done, config) {
     var self = this;
     var gcsOptions = [
       '--database-path', self.databasePath,
@@ -43,11 +41,9 @@ Target.prototype = {
     ];
     var gcsConsoleOptions = [
       '--port', self.gcsConsolePort,
-      '--endpoint', 'http://localhost:' + self.gcsPort
+      '--endpoint', 'http://localhost:' + self.gcsPort,
+      '--gcs-console-home', self.gcsConsoleHome
     ];
-    if (self.auth) {
-      gcsConsoleOptions = gcsConsoleOptions.concat(['--auth', self.auth]);
-    }
 
     if (!existsSync(self.gcsPath)) {
       var error = new Error('gcs executable is not found at ' + self.gcsPath + '. You need to setup gcs to test with gcs-console. Run "npm install gcs" (for the latest release) or "npm install git://github.com/groonga/gcs.git" (for the development)');
@@ -55,10 +51,19 @@ Target.prototype = {
     }
 
     mkdirp.sync(self.databaseDir);
+
     self.gcs = runServer(self.gcsPath, gcsOptions, function() {
       process.on('exit', function() {
         self.teardown();
       });
+
+      if (config) {
+        mkdirp.sync(self.gcsConsoleHome);
+        var configFilePath = self.gcsConsoleHome + '/config.json';
+        var json = JSON.stringify(config);
+        fs.writeFileSync(configFilePath, json);
+      }
+
       self.gcsConsole = runServer(
         self.gcsConsolePath,
         gcsConsoleOptions,
