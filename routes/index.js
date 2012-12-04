@@ -10,6 +10,12 @@ exports.index = function(req, res) {
   res.render('index', {action: 'index'});
 };
 
+function domainToEndpoint(configurationEndpoint, domain, type) {
+  var domainIdComponents = domain.DomainId.split('/');
+
+  return 'http://' + type + '-' + domainIdComponents[1] + '-' + domainIdComponents[0] + '.' + configurationEndpoint.hostname + ':' + configurationEndpoint.port;
+}
+
 function countBytes(string) {
   string = encodeURIComponent(string);
   var escapedPartsMatcher = /\%[0-9a-f][0-9a-f]/gi;
@@ -18,12 +24,16 @@ function countBytes(string) {
   return notEscapedParts.length + (escapedParts ? escapedParts.length : 0);
 }
 
-function createGcsDocumentService(domain) {
+function createGcsDocumentService(req, domain) {
   var documentService = new DocumentService({
     domainName: domain.DomainName,
     domainId: domain.DomainId
   });
-  var endpoint = url.parse('http://' + domain.DocService.Endpoint);
+  var configurationEndpoint = url.parse(req.app.get('endpoint'));
+  var endpoint = url.parse(
+    domainToEndpoint(configurationEndpoint, domain, 'doc')
+  );
+
   documentService.host = function() {
     return endpoint.hostname;
   };
@@ -43,7 +53,7 @@ function withDomain(req, res, callback) {
   domain.isSelected = true;
 
   req.domain = domain;
-  req.documentService = createGcsDocumentService(domain);
+  req.documentService = createGcsDocumentService(req, domain);
 
   // get index fields
   req.cloudsearch.DescribeIndexFields({
@@ -132,7 +142,9 @@ exports.domainSearch = function(req, res) {
       start: start,
       'return-fields': indexFieldNames.join(',')
     };
-    var requestURL = 'http://' + req.domain.SearchService.Endpoint + '/2011-02-01/search?' + querystring.stringify(paramsForSearch);
+
+    var configurationEndpoint = url.parse(req.app.get('endpoint'));
+    var requestURL = domainToEndpoint(configurationEndpoint, req.domain, 'search') + '/2011-02-01/search?' + querystring.stringify(paramsForSearch);
 
     var buffer = '';
     var results = null;

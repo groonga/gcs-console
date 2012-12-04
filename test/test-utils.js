@@ -41,7 +41,7 @@ Target.prototype = {
     ];
     var gcsConsoleOptions = [
       '--port', self.gcsConsolePort,
-      '--endpoint', 'http://localhost:' + self.gcsPort,
+      '--endpoint', 'http://127.0.0.1.xip.io:' + self.gcsPort,
       '--gcs-console-home', self.gcsConsoleHome
     ];
 

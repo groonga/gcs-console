@@ -10,7 +10,7 @@ var app = express();
 
 var defaults = {
   port: process.env.GCS_CONSOLE_PORT || 7576,
-  endpoint: process.env.GCS_CONSOLE_ENDPOINT || 'http://localhost:7575',
+  endpoint: process.env.GCS_CONSOLE_ENDPOINT || 'http://127.0.0.1.xip.io:7575',
   gcsConsoleHome: process.env.GCS_CONSOLE_HOME || process.env.HOME + '/.gcs-console'
 }
 
