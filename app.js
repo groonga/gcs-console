@@ -1,9 +1,12 @@
 var express = require('express')
-  , routes = require('./routes')
   , http = require('http')
   , path = require('path');
 var flash = require('connect-flash');
 var Config = require('./lib/config').Config;
+var routes = {
+  domains: require('./routes/domains'),
+  admin: require('./routes/admin')
+};
 
 function setupApplication(app) {
   var auth;
@@ -45,20 +48,20 @@ function setupApplication(app) {
   app.configure('development', function(){
   });
 
-  app.get('/', auth, routes.index);
-  app.get('/domain/:name', auth, routes.domain);
-  app.get('/domain/:name/search', auth, routes.domainSearch);
-  app.get('/domain/:name/index_fields', auth, routes.domainIndexFields);
-  app.get('/domain/:name/upload', auth, routes.domainUpload);
-  app.post('/domain/:name/upload', auth, routes.domainUploadPost);
-  app.get('/domain_create', auth, routes.domainCreate);
-  app.post('/domain_create', auth, routes.domainCreatePost);
-  app.post('/domain/:name/index_fields', auth, routes.domainCreateIndexField);
-  app.delete('/domain/:name/index_fields/:indexFieldName', auth, routes.domainDeleteIndexField);
-  app.delete('/domain/:name', auth, routes.domainDelete);
+  app.get('/', auth, routes.domains.index);
+  app.get('/domain/:name', auth, routes.domains.domain);
+  app.get('/domain/:name/search', auth, routes.domains.domainSearch);
+  app.get('/domain/:name/index_fields', auth, routes.domains.domainIndexFields);
+  app.get('/domain/:name/upload', auth, routes.domains.domainUpload);
+  app.post('/domain/:name/upload', auth, routes.domains.domainUploadPost);
+  app.get('/domain_create', auth, routes.domains.domainCreate);
+  app.post('/domain_create', auth, routes.domains.domainCreatePost);
+  app.post('/domain/:name/index_fields', auth, routes.domains.domainCreateIndexField);
+  app.delete('/domain/:name/index_fields/:indexFieldName', auth, routes.domains.domainDeleteIndexField);
+  app.delete('/domain/:name', auth, routes.domains.domainDelete);
 
-  app.get('/admin/password', routes.adminPassword);
-  app.post('/admin/password', routes.adminPasswordPost);
+  app.get('/admin/password', routes.admin.adminPassword);
+  app.post('/admin/password', routes.admin.adminPasswordPost);
 }
 
 module.exports.setupApplication = setupApplication;
