@@ -1,6 +1,6 @@
 {
   "name": "gcs-console",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "dependencies": {
     "express": {
       "version": "3.0.3",
@@ -71,7 +71,7 @@
       }
     },
     "awssum": {
-      "version": "0.12.1",
+      "version": "0.12.2",
       "dependencies": {
         "fmt": {
           "version": "0.4.0"
@@ -112,7 +112,7 @@
       }
     },
     "underscore": {
-      "version": "1.4.2"
+      "version": "1.4.3"
     },
     "connect-flash": {
       "version": "0.1.0"
@@ -234,7 +234,7 @@
           }
         },
         "jsdom": {
-          "version": "0.2.18",
+          "version": "0.2.19",
           "dependencies": {
             "htmlparser": {
               "version": "1.7.6"
@@ -254,7 +254,7 @@
           "version": "0.3.0"
         },
         "q": {
-          "version": "0.8.9"
+          "version": "0.8.10"
         },
         "request": {
           "version": "2.11.4",
