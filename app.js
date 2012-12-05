@@ -2,6 +2,8 @@ var express = require('express')
   , http = require('http')
   , path = require('path');
 var flash = require('connect-flash');
+var bcrypt = require('bcrypt');
+
 var Config = require('./lib/config').Config;
 var routes = {
   domains: require('./routes/domains'),
@@ -15,10 +17,12 @@ function setupApplication(app) {
   app.set('config', config);
 
   auth = function(req, res, next) {
-    var username = config.data.adminUsername;
-    var password = config.data.adminPassword;
-    if (username && password) {
-      return express.basicAuth(username, password)(req, res, next);
+    var adminUsername = config.data.adminUsername;
+    var adminPassword = config.data.adminPassword;
+    if (adminUsername && adminPassword) {
+      return express.basicAuth(function(username, password) {
+        return username === adminUsername && bcrypt.compareSync(password, adminPassword);
+      })(req, res, next);
     } else {
       return res.redirect('/admin/password');
     }

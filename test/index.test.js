@@ -1,11 +1,7 @@
 var assert = require('chai').assert;
 var Browser = require('zombie');
 var Target = require('./test-utils').Target;
-
-var config = {
-  adminUsername: 'user',
-  adminPassword: 'pass'
-};
+var utils = require('./test-utils').utils;
 
 suite('first time', function() {
   var target = new Target();
@@ -16,56 +12,34 @@ suite('first time', function() {
     target.teardown()
   });
 
-  test('config admin user', function(done) {
+  test('should redirect to password configuration', function(done) {
     var browser = new Browser();
 
-    browser.authenticate().basic('user', 'pass');
     browser
       .visit(target.rootURL)
       .then(function() {
         assert.equal(browser.location.pathname, '/admin/password');
-        assert.equal(browser.text('.alert'), 'The admin account for Groonga CloudSearch Console has not been configured yet. You must configure it to use Groonga CloudSearch Console.');
       })
+      .then(done, done);
+  });
+
+  test('config admin user', function(done) {
+    var browser = new Browser();
+
+    utils.withAdminConfigured(target, browser)
       .then(function() {
-        browser.fill('username', 'user');
-        browser.fill('password', 'pass');
-        return browser.pressButton('Save')
-      })
-      .then(function() {
+        assert.equal(browser.location.pathname, '/');
         assert.equal(browser.text('title'), 'Groonga CloudSearch Console');
       })
       .then(done, done);
   });
 });
 
-suite('dashboard', function() {
+
+suite('password configured', function() {
   var target = new Target();
   setup(function(done) {
-    target.setup(done, config)
-  });
-  teardown(function() {
-    target.teardown()
-  });
-
-  test('GET /', function(done) {
-    var browser = new Browser();
-    browser.authenticate().basic('user', 'pass');
-    browser.visit(target.rootURL).
-      then(function() {
-        assert.ok(browser.success);
-        assert.equal(browser.text('title'), 'Groonga CloudSearch Console');
-        done();
-      }).
-      fail(function(error) {
-        done(error);
-      });
-  });
-});
-
-suite('Password configured', function() {
-  var target = new Target();
-  setup(function(done) {
-    target.setup(done, config)
+    target.setup(done)
   });
   teardown(function() {
     target.teardown()
@@ -73,32 +47,32 @@ suite('Password configured', function() {
 
   test('GET / without credentials', function(done) {
     var browser = new Browser();
-    browser.visit(target.rootURL)
-    .fail(function(error) {
-      assert.equal(browser.statusCode, 401);
-      assert.isNotNull(error);
-      done();
-    });
-  })
+    utils.withAdminConfigured(target, browser)
+      .then(function() {
+        var browserWithoutPassword = new Browser();
+        browserWithoutPassword
+          .visit(target.rootURL)
+          .fail(function(error) {
+            assert.equal(browserWithoutPassword.statusCode, 401);
+            assert.isNotNull(error);
+            done();
+          })
+      });
+  });
 
   test('GET / with wrong password', function(done) {
     var browser = new Browser();
-    browser.authenticate().basic('user', 'wrong-password');
-    browser.visit(target.rootURL)
-    .fail(function(error) {
-      assert.equal(browser.statusCode, 401);
-      assert.isNotNull(error);
-      done();
-    });
-  })
-
-  test('GET / with correct password', function(done) {
-    var browser = new Browser();
-    browser.authenticate().basic('user', 'pass');
-    browser.visit(target.rootURL)
-    .then(function() {
-      assert.ok(browser.success);
-      done();
-    });
-  })
+    utils.withAdminConfigured(target, browser)
+      .then(function() {
+        var browserWithWrongPassword = new Browser();
+        browserWithWrongPassword.authenticate().basic('username', 'wrong-password');
+        browserWithWrongPassword
+          .visit(target.rootURL)
+          .fail(function(error) {
+            assert.equal(browserWithWrongPassword.statusCode, 401);
+            assert.isNotNull(error);
+            done();
+          });
+      });
+  });
 });

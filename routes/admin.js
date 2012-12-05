@@ -1,3 +1,5 @@
+var bcrypt = require('bcrypt');
+
 exports.password = function(req, res) {
   var config = req.app.get('config');
   if (config.data.adminUsername && config.data.adminPassword) {
@@ -18,7 +20,7 @@ exports.passwordPost = function(req, res) {
 
   if (username && password) {
     config.data.adminUsername = username;
-    config.data.adminPassword = password;
+    config.data.adminPassword = bcrypt.hashSync(password, 10);
     config.save();
     return res.redirect('/');
   } else {

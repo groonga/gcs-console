@@ -4,6 +4,7 @@ var rimraf = require('rimraf');
 var fs = require('fs');
 var path = require('path');
 var existsSync = fs.existsSync || path.existsSync; // to support older nodes than 0.8
+var Browser = require('zombie');
 
 function runServer(path, options, callback) {
   var command = spawn(path, options);
@@ -33,7 +34,9 @@ var Target = function(options) {
 Target.prototype = {
   gcs: null,
   gcsConsole: null,
-  setup: function(done, config) {
+  username: 'username',
+  password: 'password',
+  setup: function(done) {
     var self = this;
     var gcsOptions = [
       '--database-path', self.databasePath,
@@ -57,13 +60,6 @@ Target.prototype = {
         self.teardown();
       });
 
-      if (config) {
-        mkdirp.sync(self.gcsConsoleHome);
-        var configFilePath = self.gcsConsoleHome + '/config.json';
-        var json = JSON.stringify(config);
-        fs.writeFileSync(configFilePath, json);
-      }
-
       self.gcsConsole = runServer(
         self.gcsConsolePath,
         gcsConsoleOptions,
@@ -81,7 +77,39 @@ Target.prototype = {
     if (this.gcsConsole) {
       this.gcsConsole.kill();
     }
+  },
+  createBrowser: function() {
+    var browser = new Browser();
+    var self = this;
+
+    browser.authenticate().basic(self.username, self.password);
+    return browser
+      .visit(self.rootURL + 'admin/password')
+      .then(function() {
+        browser.fill('username', self.username);
+        browser.fill('password', self.password);
+        return browser.pressButton('Save');
+      });
   }
 };
 
 module.exports.Target = Target;
+
+
+var utils = {
+  withAdminConfigured: function(target, browser) {
+    var username = 'username';
+    var password = 'password';
+
+    browser.authenticate().basic(username, password);
+    return browser
+    .visit(target.rootURL + 'admin/password')
+    .then(function() {
+      browser.fill('username', username);
+      browser.fill('password', password);
+      return browser.pressButton('Save')
+    });
+  }
+};
+
+module.exports.utils = utils;

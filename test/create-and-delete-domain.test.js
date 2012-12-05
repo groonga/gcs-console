@@ -1,16 +1,12 @@
 var assert = require('chai').assert;
 var Browser = require('zombie');
 var Target = require('./test-utils').Target;
-
-var config = {
-  adminUsername: 'user',
-  adminPassword: 'pass'
-};
+var utils = require('./test-utils').utils;
 
 suite('dashboard', function() {
   var target = new Target();
   setup(function(done) {
-    target.setup(done, config)
+    target.setup(done)
   });
   teardown(function() {
     target.teardown()
@@ -18,9 +14,11 @@ suite('dashboard', function() {
 
   test('Create and delete a domain', function(done) {
     var browser = new Browser();
-    browser.authenticate().basic('user', 'pass');
-    browser
-      .visit(target.rootURL)
+
+    utils.withAdminConfigured(target, browser)
+      .then(function() {
+        return browser.visit(target.rootURL);
+      })
       .then(function() {
         return browser.clickLink('Create New Domain');
       })
