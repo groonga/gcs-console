@@ -6,7 +6,6 @@ exports.password = function(req, res) {
   return res.render('admin-password');
 };
 
-var Config = require('../lib/config').Config;
 exports.passwordPost = function(req, res) {
   var config = req.app.get('config');
 
