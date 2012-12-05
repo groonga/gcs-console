@@ -95,7 +95,7 @@ function errorToRender(error) {
   return errorToRender;
 }
 
-exports.domain = function(req, res) {
+exports.show = function(req, res) {
   withDomain(req, res, function(req, res) {
     res.render('domain-show', {
       action: 'domain_show',
@@ -104,7 +104,7 @@ exports.domain = function(req, res) {
   });
 };
 
-exports.domainIndexFields = function(req, res) {
+exports.indexFields = function(req, res) {
   withDomain(req, res, function(req, res) {
     res.render('domain-index-fields', {
       action: 'domain_index_fields',
@@ -114,7 +114,7 @@ exports.domainIndexFields = function(req, res) {
   });
 };
 
-exports.domainSearch = function(req, res) {
+exports.search = function(req, res) {
   withDomain(req, res, function(req, res) {
     var query = req.query.query;
     var size = 5;
@@ -197,7 +197,7 @@ exports.domainSearch = function(req, res) {
   });
 };
 
-exports.domainCreate = function(req, res) {
+exports.create = function(req, res) {
   res.render('domain-create', {
     action: "domain_create",
     domain: null,
@@ -205,7 +205,7 @@ exports.domainCreate = function(req, res) {
   });
 };
 
-exports.domainCreatePost = function(req, res) {
+exports.createPost = function(req, res) {
   var domainName = req.body.domain_name;
   req.cloudsearch.CreateDomain({
     DomainName: domainName
@@ -232,7 +232,7 @@ exports.domainCreatePost = function(req, res) {
   });
 };
 
-exports.domainDelete = function(req, res) {
+exports.delete = function(req, res) {
   req.cloudsearch.DeleteDomain({
     DomainName: req.params.name
   }, function(error, data) {
@@ -255,7 +255,7 @@ function onToTrue(str) {
   }
 }
 
-exports.domainCreateIndexField = function(req, res) {
+exports.createIndexField = function(req, res) {
   withDomain(req, res, function(req, res) {
     var request = {
       DomainName: req.domain.DomainName,
@@ -302,7 +302,7 @@ exports.domainCreateIndexField = function(req, res) {
   });
 };
 
-exports.domainDeleteIndexField = function(req, res) {
+exports.deleteIndexField = function(req, res) {
   withDomain(req, res, function(req, res) {
     req.cloudsearch.DeleteIndexField({
       DomainName: req.domain.DomainName,
@@ -324,7 +324,7 @@ exports.domainDeleteIndexField = function(req, res) {
   });
 };
 
-exports.domainUpload = function(req, res) {
+exports.upload = function(req, res) {
   withDomain(req, res, function(req, res) {
     res.render('domain-upload', {
       action: 'domain_upload',
@@ -333,7 +333,7 @@ exports.domainUpload = function(req, res) {
   });
 };
 
-exports.domainUploadPost = function(req, res) {
+exports.uploadPost = function(req, res) {
   withDomain(req, res, function(req, res) {
     fs.readFile(req.files.batch.path, function(err, data) {
       try {

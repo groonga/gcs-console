@@ -1,4 +1,4 @@
-exports.adminPassword = function(req, res) {
+exports.password = function(req, res) {
   var config = req.app.get('config');
   if (config.data.adminUsername && config.data.adminPassword) {
     return res.redirect('/');
@@ -7,7 +7,7 @@ exports.adminPassword = function(req, res) {
 };
 
 var Config = require('../lib/config').Config;
-exports.adminPasswordPost = function(req, res) {
+exports.passwordPost = function(req, res) {
   var config = req.app.get('config');
 
   if (config.data.adminUsername && config.data.adminPassword) {

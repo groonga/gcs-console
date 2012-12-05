@@ -49,19 +49,19 @@ function setupApplication(app) {
   });
 
   app.get('/', auth, routes.domains.index);
-  app.get('/domain/:name', auth, routes.domains.domain);
-  app.get('/domain/:name/search', auth, routes.domains.domainSearch);
-  app.get('/domain/:name/index_fields', auth, routes.domains.domainIndexFields);
-  app.get('/domain/:name/upload', auth, routes.domains.domainUpload);
-  app.post('/domain/:name/upload', auth, routes.domains.domainUploadPost);
-  app.get('/domain_create', auth, routes.domains.domainCreate);
-  app.post('/domain_create', auth, routes.domains.domainCreatePost);
-  app.post('/domain/:name/index_fields', auth, routes.domains.domainCreateIndexField);
-  app.delete('/domain/:name/index_fields/:indexFieldName', auth, routes.domains.domainDeleteIndexField);
-  app.delete('/domain/:name', auth, routes.domains.domainDelete);
+  app.get('/domain/:name', auth, routes.domains.show);
+  app.get('/domain/:name/search', auth, routes.domains.search);
+  app.get('/domain/:name/index_fields', auth, routes.domains.indexFields);
+  app.get('/domain/:name/upload', auth, routes.domains.upload);
+  app.post('/domain/:name/upload', auth, routes.domains.uploadPost);
+  app.get('/domain_create', auth, routes.domains.create);
+  app.post('/domain_create', auth, routes.domains.createPost);
+  app.post('/domain/:name/index_fields', auth, routes.domains.createIndexField);
+  app.delete('/domain/:name/index_fields/:indexFieldName', auth, routes.domains.deleteIndexField);
+  app.delete('/domain/:name', auth, routes.domains.delete);
 
-  app.get('/admin/password', routes.admin.adminPassword);
-  app.post('/admin/password', routes.admin.adminPasswordPost);
+  app.get('/admin/password', routes.admin.password);
+  app.post('/admin/password', routes.admin.passwordPost);
 }
 
 module.exports.setupApplication = setupApplication;
