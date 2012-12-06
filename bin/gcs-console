@@ -36,6 +36,23 @@ if (!program.endpoint.match(/^https?:\/\//)) {
   program.endpoint = 'http://' + program.endpoint;
 }
 
+function toValidHostAndPort(endpoint) {
+  var match = endpoint.match(/^\w+:\/\/([^:]+(?::\d+)?)/);
+  if (!match)
+    return endpoint;
+
+  var hostAndPort = match[1];
+  hostAndPort = hostAndPort.split(':');
+  if (hostAndPort[0] == 'localhost')
+    hostAndPort[0] = '127.0.0.1';
+  if (hostAndPort[0].match(/^\d+\.\d+\.\d+\.\d+$/))
+    hostAndPort[0] += '.xip.io';
+  hostAndPort = hostAndPort.join(':');
+  return endpoint.replace(match[1], hostAndPort);
+}
+
+program.endpoint = toValidHostAndPort(program.endpoint);
+
 app.set('endpoint', program.endpoint);
 app.set('home', program.gcsConsoleHome);
 
