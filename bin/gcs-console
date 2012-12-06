@@ -32,9 +32,8 @@ program
 
 app.set('port', program.port);
 
-if (!program.endpoint.match(/^http:\/\//)) {
-  console.log('Endpoint must start with "http://". For example, http://127.0.0.1.xip.io:7575. "' + program.endpoint + '" is given.');
-  process.exit(1);
+if (!program.endpoint.match(/^https?:\/\//)) {
+  program.endpoint = 'http://' + program.endpoint;
 }
 
 app.set('endpoint', program.endpoint);
