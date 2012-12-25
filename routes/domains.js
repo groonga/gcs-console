@@ -10,12 +10,6 @@ exports.index = function(req, res) {
   res.render('index', {action: 'index'});
 };
 
-function domainToEndpoint(configurationEndpoint, domain, type) {
-  var domainIdComponents = domain.DomainId.split('/');
-
-  return 'http://' + type + '-' + domainIdComponents[1] + '-' + domainIdComponents[0] + '.' + configurationEndpoint.hostname + ':' + configurationEndpoint.port;
-}
-
 function countBytes(string) {
   string = encodeURIComponent(string);
   var escapedPartsMatcher = /\%[0-9a-f][0-9a-f]/gi;
@@ -30,9 +24,7 @@ function createGcsDocumentService(req, domain) {
     domainId: domain.DomainId
   });
   var configurationEndpoint = url.parse(req.app.get('endpoint'));
-  var endpoint = url.parse(
-    domainToEndpoint(configurationEndpoint, domain, 'doc')
-  );
+  var endpoint = url.parse('http://' + domain.DocService.Endpoint);
 
   documentService.host = function() {
     return endpoint.hostname;
@@ -144,7 +136,12 @@ exports.search = function(req, res) {
     };
 
     var configurationEndpoint = url.parse(req.app.get('endpoint'));
-    var requestURL = domainToEndpoint(configurationEndpoint, req.domain, 'search') + '/2011-02-01/search?' + querystring.stringify(paramsForSearch);
+    var requestURL = url.format({
+      protocol: 'http',
+      host: req.domain.SearchService.Endpoint,
+      pathname: '/2011-02-01/search',
+      query: paramsForSearch
+    });
 
     var buffer = '';
     var results = null;
