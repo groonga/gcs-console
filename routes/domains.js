@@ -52,6 +52,7 @@ function withDomain(req, res, callback) {
     DomainName: domain.DomainName
   }, function(error, data) {
     if (error) {
+      console.error("Error in DescribeIndexFields:", error);
       res.status(500);
       res.render('error', {error: new Error(error.Message)});
       return;
@@ -208,6 +209,7 @@ exports.createPost = function(req, res) {
     DomainName: domainName
   }, function(error, data) {
     if (error) {
+      console.error('Error in CreateDomain:', error);
       if (error.Message) {
         res.status(500);
         res.render('error', {error: new Error(error.Message)});
@@ -234,6 +236,7 @@ exports.delete = function(req, res) {
     DomainName: req.params.name
   }, function(error, data) {
     if (error) {
+      console.error('Error in DeleteDomain:', error);
       res.status(500);
       res.render('error', {error: new Error(error.Message)});
       return;
@@ -282,6 +285,7 @@ exports.createIndexField = function(req, res) {
 
     var doneCallback = function(error, data) {
       if (error) {
+        console.error('Error in DefineIndexField:', error);
         res.status(500);
         res.render('domain-index-fields', {
           error: errorToRender(error),
@@ -306,6 +310,7 @@ exports.deleteIndexField = function(req, res) {
       IndexFieldName: req.params.indexFieldName
     }, function(error, data) {
       if (error) {
+        console.error('Error in DeleteIndexField:', error);
         res.status(500);
         res.render('domain-index-fields', {
           error: errorToRender(error),
@@ -336,6 +341,7 @@ exports.uploadPost = function(req, res) {
       try {
         var docs = JSON.parse(data);
       } catch(e) {
+        console.error('Failed to parse JSON', e);
         res.status(400);
         res.render('domain-upload', {
           action: 'domain_upload',
@@ -347,6 +353,7 @@ exports.uploadPost = function(req, res) {
 
       req.documentService.DocumentsBatch(options, function(err, data) {
         if (err) {
+          console.error('Error in DocumentsBatch', err);
           res.status(400);
           res.render('domain-upload', {
             action: 'domain_upload',
